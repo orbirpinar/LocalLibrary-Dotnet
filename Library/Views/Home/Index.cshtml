@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var numberOfBooks = ViewData["numberOfBooks"]!;
+    var numberOfAuthors = ViewData["numberOfAuthors"]!; 
+    var numberOfBookInstances = ViewData["numberOfBookInstances"]!;
+    var numberOfAvailableInstances = ViewData["numberOfAvailableInstances"];
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <hr>
+    <div class="container">
+    <p>The library has the following record counts:</p>
+    <ul>
+        <li><strong>Books:</strong> @numberOfBooks</li>
+        <li><strong>Copies:</strong> @numberOfBookInstances</li>
+        <li><strong>Copies available:</strong> @numberOfAvailableInstances</li>
+        <li><strong>Authors:</strong> @numberOfAuthors</li>
+    </ul>
+    </div>
+</div>

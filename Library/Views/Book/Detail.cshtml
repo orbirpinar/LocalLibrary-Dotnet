@@ -1,0 +1,35 @@
+@model Book
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+    
+}
+
+<h2>@Model?.Title</h2>
+<hr/>
+<p><strong>Author:</strong> <a asp-action="Detail" asp-controller="Author" 
+                               asp-route-id="@Model!.Author!.Id">@Model?.Author?.FirstName @Model?.Author?.LastName</a></p>
+<p><strong>Summary:</strong> @Model?.Summary</p>
+<p><strong>ISBN:</strong> @Model?.Isbn</p> 
+<p><strong>Language:</strong> @Model?.language</p>  
+<p><strong>Genre:</strong>@Model?.genres</p>
+
+<div class="mt-3">
+<h4>Copies</h4>
+    <hr>
+   @foreach (var instance in @Model!.Instances!)
+   {
+       var loanStatusClass = @instance.LoanStatus switch
+       {
+           LoanStatus.Available => "text-success",
+           LoanStatus.Maintenance => "text-warning",
+           LoanStatus.OnLoan => "text-primary",
+           LoanStatus.Reserved => "text-info",
+           _ => "text-primary"
+       };
+        <p class="@loanStatusClass">@instance.LoanStatus</p>
+        <p><strong>Imprint:</strong> @instance.Imprint</p>
+        <p class="text-muted"><strong>Id:</strong> @instance.Id</p>
+    }
+</div>
