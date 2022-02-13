@@ -168,6 +168,8 @@ AutoTest.Net/
 # Installshield output folder
 [Ee]xpress/
 
+.idea
+
 
 
 # DocProject is a documentation generator add-in
