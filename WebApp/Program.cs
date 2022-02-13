@@ -1,5 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +16,11 @@ builder.Services.AddDbContext<LibraryContext>(options =>
     // options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContextPostgres"))
     options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryContextMsSql"))
     );
-
-
+builder.Services.AddDbContext<AuthContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AuthContextMsSql"));
+});
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

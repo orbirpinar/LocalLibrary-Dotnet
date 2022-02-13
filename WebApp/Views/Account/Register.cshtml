@@ -1,0 +1,62 @@
+@model WebApp.Models.ViewModel.Register
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Register</title>
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+ <section>
+    <div class="container">
+      <div asp-validation-summary="All" class="text-danger"></div>
+
+      
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-8 col-xl-6">
+          <div class="row">
+            <div class="col text-center">
+              <h1>Register</h1>
+              <p class="text-h3"> LocalLibrary Web Application </p>
+            </div>
+          </div>
+          <form method="post" asp-action="Register">
+          <div class="row align-items-center mt-4">
+            <div class="col">
+              <input asp-for="Email" type="email" class="form-control" placeholder="Email">
+              <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+          </div>
+          <div class="row align-items-center mt-4">
+            <div class="col">
+              <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="col">
+              <input  asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+          </div>
+          <div class="row justify-content-start mt-4">
+            <div class="col">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input">
+                  I Read and Accept <a href="https://www.froala.com">Terms and Conditions</a>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </div>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+  </section>
+
+</body>
+</html>
