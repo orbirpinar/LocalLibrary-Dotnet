@@ -27,10 +27,10 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser()
+                var user = new IdentityUser
                 {
                     UserName = register.Email,
-                    Email = register.Email,
+                    Email = register.Email
                 };
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
@@ -83,6 +83,11 @@ namespace WebApp.Controllers
         {
             await _signInManager.SignOutAsync();
             return Redirect(nameof(Login));
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace WebApp.Controllers
             _context = context;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Index()
         {
             var books = await _context.Books.Include(book => book.Author).ToListAsync();

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WebApp.Migrations.Auth
+namespace WebApp.Migrations
 {
     public partial class IdentitySchemas : Migration
     {

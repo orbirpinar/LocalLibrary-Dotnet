@@ -25,8 +25,8 @@ namespace WebApp.Controllers
 
         public async  Task<IActionResult> Index()
         {
-            var authors =  await _context.Authors.ToListAsync();
-            return View();
+            var authors = await _context.Authors.ToListAsync();
+            return View(authors);
         }
         
         public async Task<IActionResult> Detail(int id)

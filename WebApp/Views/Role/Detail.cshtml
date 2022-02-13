@@ -1,0 +1,18 @@
+@model Microsoft.AspNetCore.Identity.IdentityRole
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Role</h2>
+<div class="container">
+
+    <div class="card" style="width: 20rem;">
+        <div class="card-block">
+            <h4 class="card-title">@Model?.Name</h4>
+            <p class="card-text">@Model?.Id</p>
+            <a href="#" class="btn btn-primary">Update</a>
+        </div>
+    </div>
+</div>

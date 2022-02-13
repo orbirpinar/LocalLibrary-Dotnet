@@ -47,10 +47,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Migrations" />
       <Folder Include="Pages" />
-      <Folder Include="Views\Login" />
-      <Folder Include="Views\Register" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\css\AccessDenied.css" />
     </ItemGroup>
 
 </Project>

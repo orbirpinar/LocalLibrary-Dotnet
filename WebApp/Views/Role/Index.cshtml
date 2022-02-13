@@ -1,0 +1,42 @@
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+@{
+    ViewBag.Title = "Roles";
+    Layout = "_Layout";
+}
+
+<h2>Role-List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                NAME
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var role in Model)
+{
+    <tr>
+            <td>
+                <a class="nav-link"  asp-action="Detail" asp-route-id="@role.Id">
+                    @Html.DisplayFor(modelItem => role.Id)
+                </a>
+            </td>
+        <td>
+                    @Html.DisplayFor(modelItem => role.Name)
+        </td>
+            <td>
+                @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
+                <a asp-action="Detail" asp-route-id="@role.Id">Details</a>
+                @* <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
+            </td>
+        </tr>
+}
+    </tbody>
+    </table>
