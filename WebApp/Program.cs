@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApp.Data;
+using WebApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ builder.Services.AddDbContext<AuthContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("AuthContextMsSql"));
 });
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthContext>();
+builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AuthContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

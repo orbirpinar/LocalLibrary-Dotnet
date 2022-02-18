@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Models;
 using WebApp.Models.ViewModel;
 
 namespace WebApp.Controllers
@@ -9,10 +13,12 @@ namespace WebApp.Controllers
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<User> _userManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -56,5 +62,7 @@ namespace WebApp.Controllers
 
             return View();
         }
+
+        
     }
 }

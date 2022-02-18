@@ -1,5 +1,4 @@
 
-using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models.ViewModel
 {
@@ -7,7 +6,6 @@ namespace WebApp.Models.ViewModel
     {
         public string? Id { get; set; }
         
-        [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

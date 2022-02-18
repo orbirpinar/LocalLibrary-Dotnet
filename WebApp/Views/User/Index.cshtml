@@ -1,0 +1,36 @@
+@model IEnumerable<User>
+
+@{
+    ViewBag.Title = "user-list";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            @foreach (var user in Model!)
+            {
+                
+                <tr>
+                    <td>
+                        <a asp-action="Detail" asp-route-id="@user.Id">
+                            @user.Id
+                        </a>
+                    </td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

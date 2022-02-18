@@ -1,16 +1,17 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Models;
 using WebApp.Models.ViewModel;
 
 namespace WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,10 +28,12 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new User
                 {
                     UserName = register.Email,
-                    Email = register.Email
+                    Email = register.Email,
+                    FirstName = register.FirstName,
+                    LastName = register.LastName
                 };
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
@@ -66,10 +69,8 @@ namespace WebApp.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
 
                 ModelState.AddModelError("", "Username or Password incorrect");

@@ -1,0 +1,37 @@
+@model WebApp.Models.ViewModel.Role
+
+@{
+    ViewBag.Title = "Assign-Role";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<section>
+    <div class="container">
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-8 col-xl-6">
+                <div class="row">
+                    <div class="col text-center">
+                        <h1>Assign Role</h1>
+                        <p class="text-h3"> LocalLibrary Web Application </p>
+                    </div>
+                </div>
+                <form method="post" asp-action="AssignRole">
+                    <div class="row align-items-center mt-4">
+                        <div class="col">
+                            <select asp-for="Name" asp-items="@ViewBag.RoleName">
+                                <option value="">-- Select Role--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row justify-content-start mt-4">
+                        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
