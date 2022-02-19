@@ -1,0 +1,17 @@
+@model BookInstance
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>BookInstance Detail</h2>
+<div class="card">
+  <h5 class="card-header">@Model.Book.Title</h5>
+  <div class="card-body">
+    <h5 class="card-title">@Model.Id</h5>
+      <p class="card-text">@Model.Borrower?.FullName</p>
+      <p class="card-text">@Model.DueBack</p>
+      <p class="card-text">@Model.LoanStatus</p>
+  </div>
+</div>

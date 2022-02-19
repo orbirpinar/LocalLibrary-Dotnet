@@ -8,33 +8,37 @@
 <h2>Book index page</h2>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Summary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Isbn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.genres)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author!.FirstName )
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author!.LastName )
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Summary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Isbn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.genres)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author!.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author!.LastName)
+        </th>
+        <th>
+            Instance Count
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var book in Model) {
-    <tr>
+    @foreach (var book in Model)
+    {
+        <tr>
             <td>
-                <a class="nav-link"  asp-action="Detail" asp-route-id="@book.Id">
+                <a class="nav-link" asp-action="Detail" asp-route-id="@book.Id">
                     @Html.DisplayFor(modelItem => book.Title)
                 </a>
             </td>
@@ -47,15 +51,18 @@
             <td>
                 @Html.DisplayFor(modelItem => book.genres)
             </td>
-        <td>
+            <td>
                 <a class="nav-link" asp-controller="Author" asp-action="Detail" asp-route-id="@book.Author!.Id">
                     @Html.DisplayFor(modelItem => book.Author!.FirstName)
                 </a>
-        </td>
+            </td>
             <td>
                 <a class="nav-link" asp-controller="Author" asp-action="Detail" asp-route-id="@book.Author!.Id">
                     @Html.DisplayFor(modelItem => book.Author!.LastName)
                 </a>
+            </td>
+            <td>
+                @book.Instances!.Count()
             </td>
             <td>
                 @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
@@ -63,9 +70,6 @@
                 @* <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
-
-
-

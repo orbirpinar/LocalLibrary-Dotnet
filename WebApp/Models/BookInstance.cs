@@ -8,10 +8,12 @@ namespace WebApp.Models
         public Guid Id { get; set; }
         
         [Column(TypeName = "Date")]
-        public DateTime DueBack { get; set; }
+        public DateTime? DueBack { get; set; }
         public LoanStatus LoanStatus { get; set; }
         public Book Book { get; set; }
         public string Imprint { get; set; }
+        
+        public User? Borrower { get; set; }
     }
 
     public enum LoanStatus

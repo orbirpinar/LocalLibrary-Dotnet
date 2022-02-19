@@ -23,10 +23,14 @@ namespace WebApp.Controllers
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Index()
         {
-            var books = await _context.Books.Include(book => book.Author).ToListAsync();
+            var books = await _context.Books
+                .Include(book => book.Author)
+                .Include(book => book.Instances)
+                .ToListAsync();
             return View(books);
         }
 
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Detail(int id)
         {
             var book = await _context.Books

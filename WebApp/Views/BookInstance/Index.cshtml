@@ -1,0 +1,42 @@
+@model IEnumerable<BookInstance>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<div class="container">
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Imprint</th>
+            <th scope="col">Loan Status</th>
+            <th scope="col">Borrower</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            @{
+                foreach (var instance in Model)
+                {
+                    <th scope="row">1</th>
+                    <td>@instance.Imprint</td>
+                    <td>@instance.LoanStatus</td>
+                    <td>@instance.Borrower?.FullName</td>
+                    @if (instance.LoanStatus == LoanStatus.Available)
+                    {
+                        <form asp-controller="UserBookInstance" asp-action="Loan" asp-route-bookInstanceId="@instance.Id" method="post">
+                            <button type="submit" class="btn btn-success btn-sm">Loan</button>
+                        </form>
+                    }
+                }
+            }
+        </tr>
+        </tbody>
+    </table>
+</div>
