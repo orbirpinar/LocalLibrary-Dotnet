@@ -1,11 +1,12 @@
-@model WebApp.Models.CreateModel.CreateBookModel
+@model WebApp.Models.CreateModel.CreateAuthorModel
 
 @{
-    ViewBag.Title = "Create Book";
+    ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
 
+<title>Create-Author</title>
 <section>
     <div class="container">
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -15,47 +16,35 @@
             <div class="col-12 col-md-8 col-lg-8 col-xl-6">
                 <div class="row">
                     <div class="col text-center">
-                        <h1>Create Book</h1>
+                        <h1>Create Author</h1>
                         <p class="text-h3"> LocalLibrary Web Application </p>
                     </div>
                 </div>
                 <form method="post" asp-action="Create">
                     <div class="row align-items-center mt-4">
                         <div class="col">
-                            <input asp-for="Title" type="text" class="form-control" placeholder="Title">
-                            <span asp-validation-for="Title" class="text-danger"></span>
+                            <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name">
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="row align-items-center mt-4">
                         <div class="col">
-                            <textarea asp-for="Summary" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Summary"></textarea>
-                            <span asp-validation-for="Summary" class="text-danger"></span>
+                            <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name"/>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                     </div>
 
                     <div class="row align-items-center mt-4">
                         <div class="col">
-                            <input asp-for="Isbn" type="text" class="form-control" placeholder="Isbn">
-                            <span asp-validation-for="Isbn" class="text-danger"></span>
+                            <input asp-for="DateOfBirth" type="text" class="form-control" placeholder="Date Of Birth">
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="row align-items-center mt-4">
-
                         <div class="col">
-                            <select asp-for="LanguageId" asp-items="@ViewBag.Languages">
-                                <option value="">-- Select Language --</option>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <div class="row align-items-center mt-4">
-
-                        <div class="col">
-                            <select asp-for="AuthorId" asp-items="@ViewBag.Authors">
-                                <option value="">-- Select Author --</option>
-                            </select>
+                            <input asp-for="DateOfDeath" type="password" class="form-control" placeholder="Date of Death">
+                            <span asp-validation-for="DateOfDeath" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="row justify-content-start mt-4">

@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WebApp.Data;
 using WebApp.Dto;
+using WebApp.Models;
+using WebApp.Models.CreateModel;
 
 namespace WebApp.Controllers
 {
@@ -43,6 +45,29 @@ namespace WebApp.Controllers
             var mappedAuthor = _mapper.Map<AuthorDetailDto>(author);
             _logger.Log(LogLevel.Information,"Accessed to Author Detail Page");
             return View(mappedAuthor);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateAuthorModel authorModel)
+        {
+            if (!ModelState.IsValid) return View();
+            Author author = new()
+            {
+                FirstName = authorModel.FirstName,
+                LastName = authorModel.LastName,
+                DateOfBirth = authorModel.DateOfBirth,
+                DateOfDeath = authorModel.DateOfDeath
+            };
+            await _context.Authors.AddAsync(author);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

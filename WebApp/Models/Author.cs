@@ -18,5 +18,7 @@ namespace WebApp.Models
         public DateTime? DateOfDeath { get; set; }
 
         public IEnumerable<Book> Books { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
