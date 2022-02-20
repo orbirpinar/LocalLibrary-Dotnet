@@ -13,7 +13,7 @@ namespace WebApp.Models
         public ICollection<Genre> genres { get; set; }
         public Language Language { get; set; }
 
-        public IEnumerable<BookInstance>? Instances { get; set; }
+        public IEnumerable<BookInstance>? Instances { get ; set; }
 
     }
 }

@@ -29,7 +29,8 @@ namespace WebApp.Controllers
         {
             var user = await GetAuthenticatedUser();
             var books = await _context.BookInstances
-                .Where(b => b.Borrower.Id == user.Id)
+                .Include(b => b.Book)
+                .Where(b => b.Borrower != null && b.Borrower.Id == user.Id)
                 .ToListAsync();
             return View(books);
         }
@@ -45,15 +46,17 @@ namespace WebApp.Controllers
 
         [Authorize]
         [HttpPost("/userBookInstance/loan/{bookInstanceId:guid}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Loan(Guid bookInstanceId)
         {
             if (!ModelState.IsValid) return View();
             var user = await GetAuthenticatedUser();
-            var bookInstance = await _context.BookInstances.
-                Where(b => b.Id.Equals(bookInstanceId))
+            var bookInstance = await _context.BookInstances
+                .Where(b => b.Id.Equals(bookInstanceId))
                 .FirstAsync();
             bookInstance.LoanStatus = LoanStatus.OnLoan;
-            bookInstance.Borrower = user;
+            bookInstance.BorrowerId = user.Id;
+            bookInstance.DueBack = DateTime.Now.AddDays(15);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp.Data;
 
@@ -11,9 +12,10 @@ using WebApp.Data;
 namespace WebApp.Migrations.Library
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20220220140837_AddUserId")]
+    partial class AddUserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,9 +91,6 @@ namespace WebApp.Migrations.Library
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<string>("BorrowerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("DueBack")
                         .HasColumnType("Date");
 
@@ -102,11 +101,14 @@ namespace WebApp.Migrations.Library
                     b.Property<int>("LoanStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("BorrowerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("BookInstances");
                 });
@@ -234,7 +236,7 @@ namespace WebApp.Migrations.Library
 
                     b.HasOne("WebApp.Models.User", "Borrower")
                         .WithMany("Instances")
-                        .HasForeignKey("BorrowerId");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Book");
 

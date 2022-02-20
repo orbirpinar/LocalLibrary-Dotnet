@@ -42,22 +42,20 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Role roleModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View();
+            var role = new IdentityRole
             {
-                var role = new IdentityRole
-                {
-                    Name = roleModel.Name
-                };
-                var result = await _roleManager.CreateAsync(role);
-                if (result.Succeeded)
-                {
-                    return Redirect(nameof(Index));
-                }
+                Name = roleModel.Name
+            };
+            var result = await _roleManager.CreateAsync(role);
+            if (result.Succeeded)
+            {
+                return Redirect(nameof(Index));
+            }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
             }
 
             return View();

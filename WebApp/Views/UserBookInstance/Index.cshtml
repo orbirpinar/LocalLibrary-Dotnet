@@ -5,4 +5,34 @@
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<h2>My Books</h2>
+<div class="container">
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Book Title</th>
+            <th scope="col">Instance Id</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Due Back</th>
+            <th scope="col">Imprint</th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (var instance in Model)
+            {
+                <tr>
+                    <th scope="row">1</th>
+                    <td>@instance.Book.Title</td>
+                    <td>@instance.Id</td>
+                    <td>@instance.Book.Isbn</td>
+                    <td>@instance.DueBack</td>
+                    <td>@instance.Imprint</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

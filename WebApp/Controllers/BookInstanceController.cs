@@ -27,14 +27,7 @@ namespace WebApp.Controllers
             return View(bookInstance);
         }
 
-        [HttpGet("/bookInstance/{bookId:int}")]
-        public async Task<IActionResult> Index(int bookId)
-        {
-            var instances = await _context.BookInstances
-                .Where(instance => instance.Book.Id == bookId)
-                .ToListAsync();
-            return View(instances);
-        }
+
         
         [HttpPost("/bookInstance/{bookId:int}")]
         public async Task<IActionResult> Create(int bookId,CreateBookInstanceModel bookInstanceModel)

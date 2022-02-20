@@ -55,5 +55,12 @@
                 <strong>Id:</strong> @instance.Id
             </p>
         </a>
+
+        @if (instance.LoanStatus == LoanStatus.Available)
+        {
+            <form asp-controller="UserBookInstance" asp-action="Loan" asp-route-bookInstanceId="@instance.Id" method="post">
+                <button type="submit" class="btn btn-success btn-sm">Loan</button>
+            </form>
+        }
     }
 </div>

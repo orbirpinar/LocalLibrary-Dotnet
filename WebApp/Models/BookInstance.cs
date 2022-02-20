@@ -13,6 +13,8 @@ namespace WebApp.Models
         public Book Book { get; set; }
         public string Imprint { get; set; }
         
+        public string? BorrowerId { get; set; }
+        
         public User? Borrower { get; set; }
     }
 
