@@ -1,42 +1,38 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using WebApp.Data;
 using WebApp.Models;
 using WebApp.Models.CreateModel;
+using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Controllers
 {
     public class BookController : Controller
     {
-        private readonly LibraryContext _context;
+        private readonly IBookRepository _bookRepository;
+        private readonly IAuthorRepository _authorRepository;
+        private readonly ILanguageRepository _languageRepository;
 
-        // GET
-        public BookController(LibraryContext context)
+
+        public BookController(IBookRepository bookRepository, IAuthorRepository authorRepository, ILanguageRepository languageRepository)
         {
-            _context = context;
+            _bookRepository = bookRepository;
+            _authorRepository = authorRepository;
+            _languageRepository = languageRepository;
         }
 
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Index()
         {
-            var books = await _context.Books
-                .Include(book => book.Author)
-                .Include(book => book.Instances)
-                .ToListAsync();
+            var books = await _bookRepository.GetAllAsync();
             return View(books);
         }
 
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Detail(int id)
         {
-            var book = await _context.Books
-                .Include(b => b.Instances)
-                .Include(b => b.Author)
-                .FirstOrDefaultAsync(b => b.Id == id);
+            var book = await _bookRepository.GetByIdAsync(id);
             if (book == null)
             {
                 return NotFound();
@@ -46,10 +42,10 @@ namespace WebApp.Controllers
         }
 
         [Authorize(Roles = "ADMIN")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            PopulateDropDownAuthors();
-            PopulateDropDownLanguages();
+            await PopulateDropDownAuthors();
+            await PopulateDropDownLanguages();
             return View();
         }
 
@@ -59,8 +55,8 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Create(CreateBookModel bookModel)
         {
             if (!ModelState.IsValid) return View();
-            var language = await _context.Languages.Where(l => l.Id == bookModel.LanguageId).FirstAsync();
-            var author = await _context.Authors.Where(a => a.Id == bookModel.AuthorId).FirstAsync();
+            var language = await _languageRepository.GetByIdAsync(bookModel.LanguageId);
+            var author = await _authorRepository.GetByIdAsync(bookModel.AuthorId);
             Book book = new()
             {
                 Language = language,
@@ -69,20 +65,20 @@ namespace WebApp.Controllers
                 Summary = bookModel.Summary,
                 Author = author
             };
-            await _context.AddAsync(book);
-            await _context.SaveChangesAsync();
+            await _bookRepository.CreateAsync(book);
+            await _bookRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private void PopulateDropDownAuthors()
+        private async Task PopulateDropDownAuthors()
         {
-            var authors = _context.Authors.ToList();
+            var authors = await _authorRepository.GetAllAsync();
             ViewBag.Authors = new SelectList(authors, "Id", "FullName");
         }
 
-        private void PopulateDropDownLanguages()
+        private async Task PopulateDropDownLanguages()
         {
-            var languages = _context.Languages.ToList();
+            var languages = await _languageRepository.GetAllAsync();
             ViewBag.Languages = new SelectList(languages, "Id", "Name");
         }
     }

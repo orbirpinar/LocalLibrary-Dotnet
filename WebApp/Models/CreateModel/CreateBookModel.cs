@@ -7,6 +7,7 @@ namespace WebApp.Models.CreateModel
         public string? Summary { get; set; }
         public string Isbn { get; set; }
         public int AuthorId { get; set; }
+        
         public int LanguageId { get; set; }
     }
 }

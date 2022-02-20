@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using WebApp.Data;
 using WebApp.Dto;
 using WebApp.Models;
 using WebApp.Models.CreateModel;
+using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Controllers
 {
@@ -14,29 +13,26 @@ namespace WebApp.Controllers
     {
         private readonly ILogger<AuthorController> _logger;
 
-        private readonly LibraryContext _context;
+        private readonly IAuthorRepository _authorRepository;
 
         private readonly IMapper _mapper;
         
-        public AuthorController(ILogger<AuthorController> logger, LibraryContext context, IMapper mapper)
+        public AuthorController(ILogger<AuthorController> logger, IMapper mapper, IAuthorRepository authorRepository)
         {
             _logger = logger;
-            _context = context;
             _mapper = mapper;
+            _authorRepository = authorRepository;
         }
 
         public async  Task<IActionResult> Index()
         {
-            var authors = await _context.Authors.ToListAsync();
+            var authors = await _authorRepository.GetAllAsync();
             return View(authors);
         }
         
         public async Task<IActionResult> Detail(int id)
         {
-            var author = await _context.Authors
-                .Include(author => author.Books)
-                .ThenInclude(book => book.Instances)
-                .FirstOrDefaultAsync(a => a.Id == id);
+            var author = await _authorRepository.GetWithBooksAndInstancesByIdAsync(id);
             if (author == null)
             {
                 _logger.Log(LogLevel.Information,"Author not found");
@@ -64,8 +60,8 @@ namespace WebApp.Controllers
                 DateOfBirth = authorModel.DateOfBirth,
                 DateOfDeath = authorModel.DateOfDeath
             };
-            await _context.Authors.AddAsync(author);
-            await _context.SaveChangesAsync();
+            await _authorRepository.CreateAsync(author);
+            await _authorRepository.SaveAsync();
 
             return RedirectToAction(nameof(Index));
         }
