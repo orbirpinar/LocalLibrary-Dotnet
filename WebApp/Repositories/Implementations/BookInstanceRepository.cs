@@ -64,6 +64,18 @@ namespace WebApp.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public async Task<int> GetCountAvailableAsync()
+        {
+            return await _context.BookInstances
+                .Where(b => b.LoanStatus == LoanStatus.Available)
+                .CountAsync();
+        }
+
+        public async Task<int> GetCountAsync()
+        {
+            return await _context.BookInstances.CountAsync();
+        }
+
         private bool _disposed;
 
         protected virtual void Dispose(bool disposing)

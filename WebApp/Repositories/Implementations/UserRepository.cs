@@ -29,9 +29,9 @@ namespace WebApp.Repositories.Implementations
             return await _userManager.FindByIdAsync(id);
         }
 
-        public Task CreateAsync(User book)
+        public async Task<IdentityResult> CreateAsync(User user,string password)
         {
-            throw new NotImplementedException();
+           return await _userManager.CreateAsync(user,password);
         }
 
         public async Task<bool> UpdateAsync(User user)

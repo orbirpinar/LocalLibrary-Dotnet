@@ -12,5 +12,7 @@ namespace WebApp.Repositories.Interfaces
         void Update(int id, Book book);
         Task DeleteByIdAsync(int id);
         Task SaveAsync();
+
+        Task<int> GetCountAsync();
     }
 }

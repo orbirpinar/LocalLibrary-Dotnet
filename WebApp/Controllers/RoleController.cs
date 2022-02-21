@@ -1,35 +1,29 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using WebApp.Models;
 using WebApp.Models.ViewModel;
+using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Controllers
 {
     public class RoleController : Controller
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<User> _userManager;
+        private readonly IRoleRepository _roleRepository;
 
-        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public RoleController(IRoleRepository roleRepository)
         {
-            _roleManager = roleManager;
-            _userManager = userManager;
+            _roleRepository = roleRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var roles = await _roleManager.Roles.ToListAsync();
+            var roles = await _roleRepository.GetAllAsync();
             return View(roles);
         }
 
         public async Task<IActionResult> Detail(string id)
         {
-            var role = await _roleManager.FindByIdAsync(id);
+            var role = await _roleRepository.GetByIdAsync(id);
             return View(role);
         }
 
@@ -47,7 +41,7 @@ namespace WebApp.Controllers
             {
                 Name = roleModel.Name
             };
-            var result = await _roleManager.CreateAsync(role);
+            var result = await _roleRepository.CreateAsync(role);
             if (result.Succeeded)
             {
                 return Redirect(nameof(Index));
@@ -60,7 +54,5 @@ namespace WebApp.Controllers
 
             return View();
         }
-
-        
     }
 }

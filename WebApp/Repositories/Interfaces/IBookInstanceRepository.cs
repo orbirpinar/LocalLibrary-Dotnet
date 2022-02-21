@@ -17,5 +17,10 @@ namespace WebApp.Repositories.Interfaces
         Task<BookInstance?> GetWithBookAndBorrowerById(Guid id);
 
         Task<IEnumerable<BookInstance>> GetByBookId(int bookId);
+
+        Task<int> GetCountAvailableAsync();
+
+        Task<int> GetCountAsync();
+        
     }
 }

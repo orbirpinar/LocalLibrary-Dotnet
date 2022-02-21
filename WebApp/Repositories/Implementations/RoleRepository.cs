@@ -26,9 +26,9 @@ namespace WebApp.Repositories.Implementations
             return await _roleManager.FindByIdAsync(id);
         }
 
-        public async Task CreateAsync(IdentityRole role)
+        public async Task<IdentityResult> CreateAsync(IdentityRole role)
         {
-            await _roleManager.CreateAsync(role);
+            return await _roleManager.CreateAsync(role);
         }
 
         public async Task<bool> UpdateAsync(IdentityRole role)

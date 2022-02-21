@@ -11,7 +11,7 @@ namespace WebApp.Repositories.Interfaces
         
         Task<IEnumerable<User>> GetAllAsync();
         Task<User?> GetByIdAsync(string id);
-        Task CreateAsync(User user);
+        Task<IdentityResult> CreateAsync(User user,string password);
         Task<bool> UpdateAsync(User user);
         Task<bool> DeleteByIdAsync(string id);
 

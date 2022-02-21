@@ -14,5 +14,7 @@ namespace WebApp.Repositories.Interfaces
 
         Task<Author?> GetWithBooksAndInstancesByIdAsync(int id);
         Task SaveAsync();
+
+        Task<int> GetCountAsync();
     }
 }

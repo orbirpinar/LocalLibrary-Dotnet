@@ -57,6 +57,11 @@ namespace WebApp.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _context.Books.CountAsync();
+        }
+
         private bool _disposed;
 
         protected virtual void Dispose(bool disposing)

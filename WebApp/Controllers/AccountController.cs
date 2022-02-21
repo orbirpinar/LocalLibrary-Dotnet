@@ -3,18 +3,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Models.ViewModel;
+using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IUserRepository _userRepository;
         private readonly SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(SignInManager<User> signInManager, IUserRepository userRepository)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
+            _userRepository = userRepository;
         }
 
         public IActionResult Register()
@@ -35,7 +36,7 @@ namespace WebApp.Controllers
                     FirstName = register.FirstName,
                     LastName = register.LastName
                 };
-                var result = await _userManager.CreateAsync(user, register.Password);
+                var result = await _userRepository.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);

@@ -8,9 +8,8 @@ using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Repositories.Implementations
 {
-    public class AuthorRepository:IAuthorRepository,IDisposable
+    public class AuthorRepository : IAuthorRepository, IDisposable
     {
-
         private readonly LibraryContext _context;
 
         public AuthorRepository(LibraryContext context)
@@ -41,21 +40,28 @@ namespace WebApp.Repositories.Implementations
         public async void DeleteByIdAsync(int id)
         {
             var author = await _context.Authors.FindAsync(id);
-            _context.Remove(author);
+            if (author is not null)
+            {
+                _context.Remove(author);
+            }
         }
 
         public async Task<Author?> GetWithBooksAndInstancesByIdAsync(int id)
         {
             return await _context.Authors
-                            .Include(author => author.Books)
-                            .ThenInclude(book => book.Instances)
-                            .FirstOrDefaultAsync(a => a.Id == id);
-            
+                .Include(author => author.Books)
+                .ThenInclude(book => book.Instances)
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> GetCountAsync()
+        {
+            return await _context.Authors.CountAsync();
         }
 
 
@@ -79,6 +85,5 @@ namespace WebApp.Repositories.Implementations
             _context.Dispose();
             GC.SuppressFinalize(this);
         }
-
     }
 }
