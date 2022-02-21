@@ -1,6 +1,6 @@
 # .Net Mvc Library Project
 
-To spin up msql docker image
+To spin up mssql docker image
 
 `docker-compose -f docker-compose.mssql.yml up -d`
 
