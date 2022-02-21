@@ -1,46 +1,42 @@
-using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using WebApp.Models;
 using WebApp.Models.ViewModel;
+using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        private readonly RoleManager<IdentityRole> _roleManager;
-
-        // GET
-        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(IUserRepository userRepository, IRoleRepository roleRepository)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
-        
+
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Index()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userRepository.GetAllAsync();
             return View(users);
         }
 
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Detail(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            var roles = await _userManager.GetRolesAsync(user);
+            var user = await _userRepository.GetByIdAsync(id);
+            var roles = await _userRepository.GetRoleNamesAsync(user);
             var userViewModel = new UserViewModel
             {
                 Email = user.Email,
                 FullName = user.FullName,
                 Username = user.UserName,
-                RoleName = string.Join(",", roles)
+                RoleNames = roles
             };
             return View(userViewModel);
         }
@@ -48,22 +44,23 @@ namespace WebApp.Controllers
         [Authorize]
         public async Task<IActionResult> LoggedInDetail()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var roles = await _userManager.GetRolesAsync(user);
+
+            var user = await _userRepository.GetLoggedInUser(User);
+            var roles = await _userRepository.GetRoleNamesAsync(user);
             var userViewModel = new UserViewModel
             {
                 Email = user.Email,
                 FullName = user.FullName,
                 Username = user.UserName,
-                RoleName = string.Join(",", roles)
+                RoleNames = roles
             };
             return View(userViewModel);
         }
         
         [Authorize(Roles = "ADMIN")]
-        public  IActionResult AssignRole()
+        public async  Task<IActionResult> AssignRole()
         {
-            PopulateDropdownRoles();
+            await PopulateDropdownRoles();
             return View();
         }
 
@@ -72,8 +69,8 @@ namespace WebApp.Controllers
         public async Task<IActionResult> AssignRole(string userId,Role roleModel)
         {
             if (!ModelState.IsValid) return View();
-            var user = await _userManager.FindByIdAsync(userId);
-            var result = await _userManager.AddToRoleAsync(user, roleModel.Name);
+            var user = await _userRepository.GetByIdAsync(userId);
+            var result = await _userRepository.AssignRoleAsync(user, roleModel.Name);
             if (result.Succeeded)
             {
                 return RedirectToAction("Detail", "User", new {userId});
@@ -87,9 +84,9 @@ namespace WebApp.Controllers
             return View();
         }
 
-        private void PopulateDropdownRoles()
+        private async Task PopulateDropdownRoles()
         {
-            var roles = _roleManager.Roles.ToList();
+            var roles = await _roleRepository.GetAllAsync();
             ViewBag.RoleName = new SelectList(roles, "Name", "Name");
         }
     }

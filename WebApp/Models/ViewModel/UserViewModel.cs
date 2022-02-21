@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace WebApp.Models.ViewModel
 {
     public class UserViewModel
@@ -5,6 +7,6 @@ namespace WebApp.Models.ViewModel
         public string Email { get; set; }
         public string FullName { get; set; }
         public string Username { get; set; }
-        public string RoleName { get; set; }
+        public IList<string> RoleNames { get; set; }
     }
 }

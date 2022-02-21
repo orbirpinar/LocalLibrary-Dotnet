@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApp.Data;
 using WebApp.Models;
+using WebApp.Repositories.Implementations;
+using WebApp.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,13 @@ builder.Services.AddDbContext<AuthContext>(options =>
 });
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AuthContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// Repositories
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IAuthorRepository,AuthorRepository>();
+builder.Services.AddScoped<ILanguageRepository,LanguageRepository>();
+builder.Services.AddScoped<IBookInstanceRepository,BookInstanceRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 var app = builder.Build();
 
