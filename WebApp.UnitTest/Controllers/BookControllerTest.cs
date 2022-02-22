@@ -15,37 +15,55 @@ namespace WebApp.UnitTest.Controllers
 {
     public class BookControllerTest
     {
+        private readonly BookController _sut;
         private readonly Mock<IBookRepository> _mockBookRepo = new();
         private readonly Mock<IAuthorRepository> _mockAuthorRepo = new();
         private readonly Mock<ILanguageRepository> _mockLanguageRepo = new();
 
+        public BookControllerTest()
+        {
+            _sut = new BookController(_mockBookRepo.Object, _mockAuthorRepo.Object, _mockLanguageRepo.Object);
+        }
+
         [Fact]
         public async Task Index_WhenIsCalled_ShouldReturnViewWithBookList()
         {
+            // Arrange
             _mockBookRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(GetAllBooksTest());
-            var controller = new BookController(_mockBookRepo.Object,_mockAuthorRepo.Object,_mockLanguageRepo.Object);
-            var result = await controller.Index();
+
+            // Act
+            var result = await _sut.Index();
+
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             viewResult.Model.Should().BeEquivalentTo(GetAllBooksTest());
         }
-        
+
         [Fact]
         public async Task Detail_WhenBookIsNull_ShouldReturnNotFound()
         {
+            // Arrange
             _mockBookRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((Book?) null);
-            var controller = new BookController(_mockBookRepo.Object,_mockAuthorRepo.Object,_mockLanguageRepo.Object);
-            var result = await controller.Detail(2);
+
+            // Adt
+            var result = await _sut.Detail(2);
+            
+            // Assert
             var notFoundResult = Assert.IsType<NotFoundResult>(result);
             notFoundResult.StatusCode.Should().Be(404);
         }
- 
+
 
         [Fact]
         public async Task Detail_WhenBookDoesNotNull_ShouldReturnViewResultWithBookObject()
         {
+            // Arrange
             _mockBookRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(GetOneBook());
-            var controller = new BookController(_mockBookRepo.Object,_mockAuthorRepo.Object,_mockLanguageRepo.Object);
-            var result = await controller.Detail(1);
+            
+            // Act
+            var result = await _sut.Detail(1);
+            
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             viewResult.Model.Should().BeEquivalentTo(GetOneBook());
         }
@@ -53,13 +71,17 @@ namespace WebApp.UnitTest.Controllers
         [Fact]
         public async Task CreateGet_WhenIsCalled_ShouldReturnViewResultWithAuthorsAndLanguagesSelectList()
         {
+            // Arrange
             _mockAuthorRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(GetAllAuthorsTest());
             _mockLanguageRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(GetAllLanguagesTest());
-            var controller = new BookController(_mockBookRepo.Object,_mockAuthorRepo.Object,_mockLanguageRepo.Object);
-            var result = await controller.Create();
+            
+            // Act
+            var result = await _sut.Create();
+            var authorSelectList = _sut.ViewBag.Authors as SelectList;
+            var languageSelectList = _sut.ViewBag.Languages as SelectList;
+            
+            // Assert
             Assert.IsType<ViewResult>(result);
-            var authorSelectList = controller.ViewBag.Authors as SelectList;
-            var languageSelectList = controller.ViewBag.Languages as SelectList;
             authorSelectList.Should().NotBeNull();
             languageSelectList.Should().NotBeNull();
         }
@@ -72,7 +94,7 @@ namespace WebApp.UnitTest.Controllers
                 Title = "Fake title",
                 Summary = "Fake summary"
             };
-            
+
             Book book2 = new()
             {
                 Id = 2,
@@ -105,7 +127,7 @@ namespace WebApp.UnitTest.Controllers
                 FirstName = "Fyodor",
                 LastName = "Dostoevsky"
             };
-            
+
             Author author2 = new()
             {
                 Id = 2,
@@ -118,7 +140,6 @@ namespace WebApp.UnitTest.Controllers
                 author1,
                 author2
             };
-
         }
 
         private static IEnumerable<Language> GetAllLanguagesTest()
@@ -128,7 +149,7 @@ namespace WebApp.UnitTest.Controllers
                 Id = 1,
                 Name = "English"
             };
-            
+
             Language language2 = new()
             {
                 Id = 1,

@@ -10,10 +10,16 @@ namespace WebApp.UnitTest.Controllers
 {
     public class HomeControllerTests
     {
+        private readonly HomeController _sut;
         private readonly Mock<IBookRepository> _bookRepo = new();
         private readonly Mock<IAuthorRepository> _authorRepo = new();
         private readonly Mock<ILogger<HomeController>> _logger = new();
         private readonly Mock<IBookInstanceRepository> _bookInstanceRepo = new();
+
+        public HomeControllerTests()
+        {
+            _sut = new HomeController(_logger.Object, _authorRepo.Object, _bookInstanceRepo.Object, _bookRepo.Object);
+        }
         
         
         [Theory]
@@ -37,14 +43,16 @@ namespace WebApp.UnitTest.Controllers
             _bookInstanceRepo.Setup(repo => repo.GetCountAvailableAsync())
                 .ReturnsAsync(bookInstanceAvailableCount);
 
-            var controller = new HomeController(_logger.Object, _authorRepo.Object, _bookInstanceRepo.Object, _bookRepo.Object);
 
-            var result = await controller.Index();
+            //Act
+            var result = await _sut.Index();
+            
+            //Assert
             Assert.IsType<ViewResult>(result);
-            Assert.Equal(bookCount, controller.ViewData["numberOfBooks"]);
-            Assert.Equal(authorCount,controller.ViewData["numberOfAuthors"]);
-            Assert.Equal(bookInstanceCount,controller.ViewData["numberOfBookInstances"]);
-            Assert.Equal(bookInstanceAvailableCount,controller.ViewData["numberOfAvailableInstances"]);
+            Assert.Equal(bookCount, _sut.ViewData["numberOfBooks"]);
+            Assert.Equal(authorCount,_sut.ViewData["numberOfAuthors"]);
+            Assert.Equal(bookInstanceCount,_sut.ViewData["numberOfBookInstances"]);
+            Assert.Equal(bookInstanceAvailableCount,_sut.ViewData["numberOfAvailableInstances"]);
         }
     }
 }
