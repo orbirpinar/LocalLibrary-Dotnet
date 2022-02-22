@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Moq;
 using WebApp.Controllers;
 using WebApp.Models;
@@ -36,6 +38,7 @@ namespace WebApp.UnitTest.Controllers
             var notFoundResult = Assert.IsType<NotFoundResult>(result);
             notFoundResult.StatusCode.Should().Be(404);
         }
+ 
 
         [Fact]
         public async Task Detail_WhenBookDoesNotNull_ShouldReturnViewResultWithBookObject()
@@ -45,6 +48,20 @@ namespace WebApp.UnitTest.Controllers
             var result = await controller.Detail(1);
             var viewResult = Assert.IsType<ViewResult>(result);
             viewResult.Model.Should().BeEquivalentTo(GetOneBook());
+        }
+
+        [Fact]
+        public async Task CreateGet_WhenIsCalled_ShouldReturnViewResultWithAuthorsAndLanguagesSelectList()
+        {
+            _mockAuthorRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(GetAllAuthorsTest());
+            _mockLanguageRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(GetAllLanguagesTest());
+            var controller = new BookController(_mockBookRepo.Object,_mockAuthorRepo.Object,_mockLanguageRepo.Object);
+            var result = await controller.Create();
+            Assert.IsType<ViewResult>(result);
+            var authorSelectList = controller.ViewBag.Authors as SelectList;
+            var languageSelectList = controller.ViewBag.Languages as SelectList;
+            authorSelectList.Should().NotBeNull();
+            languageSelectList.Should().NotBeNull();
         }
 
         private static IEnumerable<Book> GetAllBooksTest()
@@ -77,6 +94,51 @@ namespace WebApp.UnitTest.Controllers
                 Id = 1,
                 Title = "Fake title",
                 Summary = "Fake summary"
+            };
+        }
+
+        private static IEnumerable<Author> GetAllAuthorsTest()
+        {
+            Author author1 = new()
+            {
+                Id = 1,
+                FirstName = "Fyodor",
+                LastName = "Dostoevsky"
+            };
+            
+            Author author2 = new()
+            {
+                Id = 2,
+                FirstName = "Lev",
+                LastName = "Tolstoy"
+            };
+
+            return new List<Author>
+            {
+                author1,
+                author2
+            };
+
+        }
+
+        private static IEnumerable<Language> GetAllLanguagesTest()
+        {
+            Language language1 = new()
+            {
+                Id = 1,
+                Name = "English"
+            };
+            
+            Language language2 = new()
+            {
+                Id = 1,
+                Name = "Turkish"
+            };
+
+            return new List<Language>
+            {
+                language1,
+                language2
             };
         }
     }

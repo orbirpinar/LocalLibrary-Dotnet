@@ -59,7 +59,7 @@ namespace WebApp.Controllers
             var author = await _authorRepository.GetByIdAsync(bookModel.AuthorId);
             Book book = new()
             {
-                Language = language,
+                Language = language!,
                 Title = bookModel.Title,
                 Isbn = bookModel.Isbn,
                 Summary = bookModel.Summary,
