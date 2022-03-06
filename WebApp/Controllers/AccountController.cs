@@ -27,26 +27,24 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Register register)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View();
+            var user = new User
             {
-                var user = new User
-                {
-                    UserName = register.Email,
-                    Email = register.Email,
-                    FirstName = register.FirstName,
-                    LastName = register.LastName
-                };
-                var result = await _userRepository.CreateAsync(user, register.Password);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
-                }
+                UserName = register.Email,
+                Email = register.Email,
+                FirstName = register.FirstName,
+                LastName = register.LastName
+            };
+            var result = await _userRepository.CreateAsync(user, register.Password);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+                return RedirectToAction("Index", "Home");
+            }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
             }
 
             return View();
@@ -61,21 +59,19 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Login loginModel, string? returnUrl)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View();
+            var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, false);
+            if (result.Succeeded)
             {
-                var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, false);
-                if (result.Succeeded)
+                if (!string.IsNullOrEmpty(returnUrl))
                 {
-                    if (!string.IsNullOrEmpty(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(returnUrl);
                 }
 
-                ModelState.AddModelError("", "Username or Password incorrect");
+                return RedirectToAction("Index", "Home");
             }
+
+            ModelState.AddModelError("", "Username or Password incorrect");
 
             return View();
         }

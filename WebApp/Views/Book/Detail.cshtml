@@ -1,4 +1,4 @@
-@model Book
+@model Book?
 
 @{
     ViewBag.Title = "title";
@@ -12,7 +12,7 @@
     <strong>Author:</strong>
     <a asp-action="Detail" asp-controller="Author"
        asp-route-id="@Model!.Author!.Id">
-        @Model?.Author?.FirstName @Model?.Author?.LastName
+        @Model?.Author?.Name 
     </a>
 </p>
 <p>
@@ -25,7 +25,7 @@
     <strong>Language:</strong> @Model?.Language
 </p>
 <p>
-    <strong>Genre:</strong>@Model?.genres
+    <strong>Genre:</strong>@Model?.Genres
 </p>
 <hr/>
 <form asp-controller="BookInstance" asp-action="Create" asp-route-bookId="@Model.Id">
@@ -36,31 +36,34 @@
 <div class="mt-3">
     <h4>Copies</h4>
     <hr>
-    @foreach (var instance in Model!.Instances!)
+    @if (Model!.Instances!.Any())
     {
-        var loanStatusClass = instance.LoanStatus switch
+        @foreach (var instance in Model!.Instances!)
         {
-            LoanStatus.Available => "text-success",
-            LoanStatus.Maintenance => "text-warning",
-            LoanStatus.OnLoan => "text-primary",
-            LoanStatus.Reserved => "text-info",
-            _ => "text-primary"
-            };
-        <p class="@loanStatusClass">@instance.LoanStatus</p>
-        <p>
-            <strong>Imprint:</strong> @instance.Imprint
-        </p>
-        <a asp-controller="BookInstance" asp-action="Detail" asp-route-id="@instance.Id">
-            <p class="text-muted">
-                <strong>Id:</strong> @instance.Id
+            var loanStatusClass = instance.LoanStatus switch
+            {
+                LoanStatus.Available => "text-success",
+                LoanStatus.Maintenance => "text-warning",
+                LoanStatus.OnLoan => "text-primary",
+                LoanStatus.Reserved => "text-info",
+                _ => "text-primary"
+                };
+            <p class="@loanStatusClass">@instance.LoanStatus</p>
+            <p>
+                <strong>Imprint:</strong> @instance.Imprint
             </p>
-        </a>
+            <a asp-controller="BookInstance" asp-action="Detail" asp-route-id="@instance.Id">
+                <p class="text-muted">
+                    <strong>Id:</strong> @instance.Id
+                </p>
+            </a>
 
-        @if (instance.LoanStatus == LoanStatus.Available)
-        {
-            <form asp-controller="UserBookInstance" asp-action="Loan" asp-route-bookInstanceId="@instance.Id" method="post">
-                <button type="submit" class="btn btn-success btn-sm">Loan</button>
-            </form>
+            @if (instance.LoanStatus == LoanStatus.Available)
+            {
+                <form asp-controller="UserBookInstance" asp-action="Loan" asp-route-bookInstanceId="@instance.Id" method="post">
+                    <button type="submit" class="btn btn-success btn-sm">Loan</button>
+                </form>
+            }
         }
     }
 </div>

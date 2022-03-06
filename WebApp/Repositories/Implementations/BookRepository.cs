@@ -31,7 +31,7 @@ namespace WebApp.Repositories.Implementations
         {
             return await _context.Books
                 .Include(b => b.Author)
-                .Include(b => b.Author)
+                .Include(b => b.Instances)
                 .Where(b => b.Id == id)
                 .FirstAsync();
         }

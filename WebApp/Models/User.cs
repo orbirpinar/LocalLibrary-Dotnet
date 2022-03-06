@@ -10,6 +10,6 @@ namespace WebApp.Models
 
         public string FullName => FirstName + " " + LastName;
 
-        public ICollection<BookInstance> Instances { get; set; }
+        public ICollection<BookInstance>? Instances { get; set; }
     }
 }

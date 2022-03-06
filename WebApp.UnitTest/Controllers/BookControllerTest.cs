@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -124,15 +122,13 @@ namespace WebApp.UnitTest.Controllers
             Author author1 = new()
             {
                 Id = 1,
-                FirstName = "Fyodor",
-                LastName = "Dostoevsky"
+                Name = "Fyodor,Dostoevsky"
             };
 
             Author author2 = new()
             {
                 Id = 2,
-                FirstName = "Lev",
-                LastName = "Tolstoy"
+                Name = "Lev, Tolstoy"
             };
 
             return new List<Author>

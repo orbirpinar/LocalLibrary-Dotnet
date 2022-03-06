@@ -55,8 +55,7 @@ namespace WebApp.Controllers
             if (!ModelState.IsValid) return View();
             Author author = new()
             {
-                FirstName = authorModel.FirstName,
-                LastName = authorModel.LastName,
+                Name = authorModel.Name,
                 DateOfBirth = authorModel.DateOfBirth,
                 DateOfDeath = authorModel.DateOfDeath
             };

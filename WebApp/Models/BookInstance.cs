@@ -10,8 +10,8 @@ namespace WebApp.Models
         [Column(TypeName = "Date")]
         public DateTime? DueBack { get; set; }
         public LoanStatus LoanStatus { get; set; }
-        public Book Book { get; set; }
-        public string Imprint { get; set; }
+        public Book? Book { get; set; }
+        public string? Imprint { get; set; }
         
         public string? BorrowerId { get; set; }
         
