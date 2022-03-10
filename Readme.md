@@ -17,9 +17,14 @@ And To spin up postgres docker image
 
 ## Java Selenium Bot-Process
 
-In order to populating to author and books table in to the database
-Simply open the terminal and type below.
+In order to populating to author and books table
+Simply open the terminal 
 
+- Go to java project
+
+`cd scraping.library`
+
+- Run Project 
 `mvn spring-boot:run`
 
 and then hit the 
