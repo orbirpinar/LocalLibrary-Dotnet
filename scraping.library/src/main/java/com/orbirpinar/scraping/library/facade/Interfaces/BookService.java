@@ -4,8 +4,9 @@ import com.orbirpinar.scraping.library.dtos.BookDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface BookDetailService {
+public interface BookService {
 
     BookDto getData();
     void clickAuthorDetailLink();
+    void clickBookDetail();
 }

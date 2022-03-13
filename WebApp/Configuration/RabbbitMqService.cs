@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
+using WebApp.Consumer;
 
-namespace WebApp.Consumer
+namespace WebApp.Configuration
 {
 public interface IRabbitMqService
     {

@@ -6,6 +6,6 @@ namespace WebApp.Seeder
 {
     public interface ISeederRepository
     {
-        public Task SaveAsync(SeedData? seedData);
+        public Task<SeedData?> SaveAsync(SeedData? seedData);
     }
 }

@@ -2,4 +2,8 @@ selenium:
   url:
     chrome: http://localhost:4444/wd/hub
 
-base-url: https://www.goodreads.com/list/show/1.Best_Books_Ever
+base-url: https://www.goodreads.com
+
+rabbitMq:
+  queue:
+    searchData: "searchDataQueue"

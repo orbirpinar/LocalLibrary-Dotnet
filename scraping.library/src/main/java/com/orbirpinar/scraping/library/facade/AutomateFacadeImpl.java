@@ -4,17 +4,16 @@ import com.orbirpinar.scraping.library.PageObjects.BookListPO;
 import com.orbirpinar.scraping.library.dtos.AuthorDto;
 import com.orbirpinar.scraping.library.dtos.BookDto;
 import com.orbirpinar.scraping.library.dtos.ScrapingResponseDto;
+import com.orbirpinar.scraping.library.dtos.SearchParamDto;
 import com.orbirpinar.scraping.library.facade.Interfaces.AuthorDetailService;
 import com.orbirpinar.scraping.library.facade.Interfaces.AutomateFacade;
-import com.orbirpinar.scraping.library.facade.Interfaces.BookDetailService;
+import com.orbirpinar.scraping.library.facade.Interfaces.BookService;
 import com.orbirpinar.scraping.library.producer.IProducer;
 import com.orbirpinar.scraping.library.utils.DriverCommonUtil;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AutomateFacadeImpl implements AutomateFacade {
@@ -23,7 +22,7 @@ public class AutomateFacadeImpl implements AutomateFacade {
     @Autowired
     private final BookListPO bookListPO;
     private final AuthorDetailService authorDetailService;
-    private final BookDetailService bookDetailService;
+    private final BookService bookService;
     private final DriverCommonUtil driverCommonUtil;
     private final IProducer producer;
 
@@ -31,36 +30,45 @@ public class AutomateFacadeImpl implements AutomateFacade {
     private String BASE_URL;
 
     public AutomateFacadeImpl(BookListPO bookListPO,
-                              AuthorDetailService authorDetailService, BookDetailService bookDetailService,
+                              AuthorDetailService authorDetailService, BookService bookDetailService,
                               DriverCommonUtil driverCommonUtil,
                               IProducer producer) {
 
         this.bookListPO = bookListPO;
         this.authorDetailService = authorDetailService;
-        this.bookDetailService = bookDetailService;
+        this.bookService = bookDetailService;
         this.driverCommonUtil = driverCommonUtil;
         this.producer = producer;
     }
 
-    public List<ScrapingResponseDto> getAllData() {
-        List<ScrapingResponseDto> scrapingResponseDtos = new ArrayList<>();
+    public void scrapingBestBooks() {
         for (int i = 1; i <= 1; i++) {
-            bookListPO.navigateTo(BASE_URL + "?page=" + i);
+            bookListPO.navigateTo(BASE_URL + "/list/show/1.Best_Books_Ever?page=" + i);
             for (int j = 51; j < 55; j++) {
-                ScrapingResponseDto scrapingResponseDto = new ScrapingResponseDto();
                 driverCommonUtil.click(bookListPO.getListOfDetailLink().get(j));
-                BookDto bookDto = bookDetailService.getData();
-                bookDetailService.clickAuthorDetailLink();
-                AuthorDto authorDto = authorDetailService.getData();
-                scrapingResponseDto.setBook(bookDto);
-                scrapingResponseDto.setAuthor(authorDto);
-                scrapingResponseDtos.add(scrapingResponseDto);
-                // send to rabbitmq
-                producer.send(scrapingResponseDto);
-
-                bookListPO.navigateTo(BASE_URL + "?page=" + i);
+                sendData();
+                bookListPO.navigateTo(BASE_URL + "/list/show/1.Best_Books_Ever?page=" + i);
             }
         }
-        return scrapingResponseDtos;
+    }
+
+
+    @Override
+    @RabbitListener(queues = "${rabbitMq.queue.searchData}")
+    public void scrapingByBookTitle(SearchParamDto searchParamDto) {
+        bookListPO.navigateTo(BASE_URL + "/search?q=" + searchParamDto.getTitle());
+        bookService.clickBookDetail();
+        sendData();
+    }
+
+    private void sendData() {
+        ScrapingResponseDto scrapingResponseDto = new ScrapingResponseDto();
+        BookDto bookDto = bookService.getData();
+        bookService.clickAuthorDetailLink();
+        AuthorDto authorDto = authorDetailService.getData();
+        scrapingResponseDto.setBook(bookDto);
+        scrapingResponseDto.setAuthor(authorDto);
+        // send to rabbitmq
+        producer.send(scrapingResponseDto);
     }
 }

@@ -1,4 +1,4 @@
-namespace WebApp.Consumer
+namespace WebApp.Configuration
 {
         public class RabbitMqConfiguration
         {

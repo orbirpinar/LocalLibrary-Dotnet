@@ -7,9 +7,8 @@ using WebApp.Seeder;
 
 namespace WebApp.Handlers
 {
-    public class PopulateDatabaseHandler: IRequestHandler<PopulateDatabase,Unit>
+    public class PopulateDatabaseHandler : IRequestHandler<PopulateDatabase, Unit>
     {
-
         private readonly ISeederRepository _seederRepository;
         private readonly ILogger<PopulateDatabaseHandler> _logger;
 
@@ -20,9 +19,10 @@ namespace WebApp.Handlers
             _logger = logger;
         }
 
-        public  async Task<Unit> Handle(PopulateDatabase request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(PopulateDatabase request, CancellationToken cancellationToken)
         {
             await _seederRepository.SaveAsync(request.Request);
+
             return Unit.Value;
         }
     }

@@ -13,6 +13,6 @@ public class Execute {
     }
 
     public void execute() {
-        automateFacade.getAllData();
+        automateFacade.scrapingBestBooks();
     }
 }

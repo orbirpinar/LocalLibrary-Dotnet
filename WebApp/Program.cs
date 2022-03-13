@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApp.Configuration;
 using WebApp.Consumer;
 using WebApp.Data;
 using WebApp.Models;
+using WebApp.Producer;
 using WebApp.Repositories.Implementations;
 using WebApp.Repositories.Interfaces;
 using WebApp.Seeder;
@@ -41,6 +43,7 @@ builder.Services.Configure<RabbitMqConfiguration>(a => builder.Configuration.Get
 builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 builder.Services.AddSingleton<IConsumerService, ConsumerService>();
 builder.Services.AddHostedService<ConsumerHostedService>();
+builder.Services.AddSingleton<IProducerService, ProducerService>();
 
 var app = builder.Build();
 

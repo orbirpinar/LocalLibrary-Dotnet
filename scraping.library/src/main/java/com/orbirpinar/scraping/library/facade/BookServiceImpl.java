@@ -1,9 +1,10 @@
 package com.orbirpinar.scraping.library.facade;
 
 import com.orbirpinar.scraping.library.PageObjects.BookDetailPO;
+import com.orbirpinar.scraping.library.PageObjects.BookListPO;
 import com.orbirpinar.scraping.library.dtos.BookDto;
 import com.orbirpinar.scraping.library.dtos.GenreDto;
-import com.orbirpinar.scraping.library.facade.Interfaces.BookDetailService;
+import com.orbirpinar.scraping.library.facade.Interfaces.BookService;
 import com.orbirpinar.scraping.library.utils.Mapper;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookDetailServiceImpl implements BookDetailService {
+public class BookServiceImpl implements BookService {
 
     private final BookDetailPO bookDetailPO;
+    private final BookListPO bookListPO;
 
-    public BookDetailServiceImpl(BookDetailPO bookDetailPO) {
+    public BookServiceImpl(BookDetailPO bookDetailPO, BookListPO bookListPO) {
         this.bookDetailPO = bookDetailPO;
+        this.bookListPO = bookListPO;
     }
 
 
@@ -42,5 +45,11 @@ public class BookDetailServiceImpl implements BookDetailService {
     @Override
     public void clickAuthorDetailLink() {
         bookDetailPO.clickAuthorDetailLink();
+    }
+
+    @Override
+    public void clickBookDetail() {
+        bookListPO.initElements();
+        bookListPO.clickDetailLink();
     }
 }
