@@ -52,6 +52,9 @@ public class BookDetailPO extends BasePO {
     @FindBy(how = How.CSS, using = ".modal__close button")
     private WebElement modalCloseButton;
 
+    @FindBy(how = How.ID, using = "bookDataBoxShow")
+    private WebElement bookDataBoxShow;
+
 
     public String getBookTitle() {
         waitUtils.staticWait(1000);
@@ -77,6 +80,11 @@ public class BookDetailPO extends BasePO {
     public String getSummary() {
         waitUtils.staticWait(1000);
         waitUtils.waitForElementToBeVisible(shortDescription);
+        if(!driverCommonUtil.doesElementEnabled(longDescription)) {
+            String shortDescriptionText = shortDescription.getText().replaceAll("/","").trim();
+            log.info("<GETTING SUMMARY> <{}>", shortDescriptionText);
+            return shortDescriptionText;
+        }
         JsUtil.displayNone(driver,shortDescription);
         waitUtils.staticWait(500);
         JsUtil.displayInline(driver,longDescription);
@@ -95,6 +103,7 @@ public class BookDetailPO extends BasePO {
     }
 
     public Optional<String> getIsbn() {
+        clickMoreDataButton();
         List<WebElement> isbn13Tag = driver.findElements(By.xpath("//div[contains(text(),'ISBN')]/following::span[@itemProp='isbn']"));
         List<WebElement> isbn10Tag = driver.findElements(By.xpath("//div[contains(text(),'ISBN')]/following::div"));
         if (!isbn13Tag.isEmpty()) {
@@ -110,9 +119,15 @@ public class BookDetailPO extends BasePO {
     public List<String> getGenres() {
         if (!genreTags.isEmpty()) {
             return genreTags.stream()
-                    .map(WebElement::getText).collect(Collectors.toList());
+                    .map(WebElement::getText)
+                    .distinct()
+                    .collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    private void clickMoreDataButton(){
+        bookDataBoxShow.click();
     }
 
 

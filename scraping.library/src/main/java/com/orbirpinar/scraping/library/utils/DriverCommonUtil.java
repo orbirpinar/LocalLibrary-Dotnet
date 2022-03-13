@@ -29,7 +29,15 @@ public class DriverCommonUtil {
 
     public boolean doesElementExists(WebElement element) {
         try {
-            return element.isDisplayed()  && element.isEnabled();
+            return element.isDisplayed() && element.isEnabled();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean doesElementEnabled(WebElement element) {
+        try {
+            return element.isEnabled();
         } catch (Exception e) {
             return false;
         }
@@ -43,7 +51,7 @@ public class DriverCommonUtil {
         try {
             waitUtils.waitForElementClickable(element);
             element.click();
-        }catch (StaleElementReferenceException ex) {
+        } catch (StaleElementReferenceException ex) {
             element = reInitializeStaleElement(element);
             element.click();
         }
@@ -73,8 +81,6 @@ public class DriverCommonUtil {
     }
 
 
-
-
     public void closeBrowser() {
         getDriver().close();
     }
@@ -90,8 +96,8 @@ public class DriverCommonUtil {
     public boolean isBrowserOpen() {
         try {
             getDriver().getCurrentUrl();
-            return  true;
-        }catch (Exception e) {
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }

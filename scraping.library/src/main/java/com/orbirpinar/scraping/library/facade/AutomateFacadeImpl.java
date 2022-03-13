@@ -46,7 +46,7 @@ public class AutomateFacadeImpl implements AutomateFacade {
         List<ScrapingResponseDto> scrapingResponseDtos = new ArrayList<>();
         for (int i = 1; i <= 1; i++) {
             bookListPO.navigateTo(BASE_URL + "?page=" + i);
-            for (int j = 38; j < 41; j++) {
+            for (int j = 51; j < 55; j++) {
                 ScrapingResponseDto scrapingResponseDto = new ScrapingResponseDto();
                 driverCommonUtil.click(bookListPO.getListOfDetailLink().get(j));
                 BookDto bookDto = bookDetailService.getData();
