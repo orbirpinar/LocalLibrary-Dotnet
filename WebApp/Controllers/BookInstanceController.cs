@@ -23,6 +23,10 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Detail(Guid id)
         {
             var bookInstance = await _bookInstanceRepository.GetWithBookAndBorrowerById(id);
+            if (bookInstance is null)
+            {
+                return NotFound();
+            }
             return View(bookInstance);
         }
 

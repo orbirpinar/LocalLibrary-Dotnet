@@ -12,7 +12,7 @@ namespace WebApp.Repositories.Interfaces
         Task<BookInstance?> GetByIdAsync(Guid id);
         Task CreateAsync(BookInstance bookInstance);
         void Update(BookInstance bookInstance);
-        Task DeleteByIdAsync(Guid id);
+        Task<bool> DeleteByIdAsync(Guid id);
         Task SaveAsync();
         Task<BookInstance?> GetWithBookAndBorrowerById(Guid id);
 

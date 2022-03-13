@@ -28,7 +28,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await GetAuthenticatedUser();
-            var books = await _context.BookInstances
+            var books = await _context.BookInstance
                 .Include(b => b.Book)
                 .Where(b => b.Borrower != null && b.Borrower.Id == user.Id)
                 .ToListAsync();
@@ -38,7 +38,7 @@ namespace WebApp.Controllers
         [Authorize]
         public async Task<IActionResult> Loan()
         {
-            var books = await _context.Books.Where(b => b.Instances != null)
+            var books = await _context.Book.Where(b => b.Instances != null)
                 .ToListAsync();
             ViewBag.Books = new SelectList(books, "Id", "Name");
             return View();
@@ -51,7 +51,7 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid) return View();
             var user = await GetAuthenticatedUser();
-            var bookInstance = await _context.BookInstances
+            var bookInstance = await _context.BookInstance
                 .Where(b => b.Id.Equals(bookInstanceId))
                 .FirstAsync();
             bookInstance.LoanStatus = LoanStatus.OnLoan;

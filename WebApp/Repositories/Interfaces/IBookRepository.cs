@@ -9,6 +9,8 @@ namespace WebApp.Repositories.Interfaces
         Task<IEnumerable<Book>> GetAllAsync();
         Task<Book?> GetByIdAsync(int id);
         Task CreateAsync(Book book);
+
+        Task CreateOrUpdateAsync(Book book);
         void Update(int id, Book book);
         Task DeleteByIdAsync(int id);
         Task SaveAsync();

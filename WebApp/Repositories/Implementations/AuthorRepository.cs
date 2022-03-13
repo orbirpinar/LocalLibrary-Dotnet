@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
@@ -8,7 +9,7 @@ using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Repositories.Implementations
 {
-    public class AuthorRepository : IAuthorRepository, IDisposable
+    internal sealed class AuthorRepository : IAuthorRepository, IDisposable
     {
         private readonly LibraryContext _context;
 
@@ -19,12 +20,12 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<IEnumerable<Author>> GetAllAsync()
         {
-            return await _context.Authors.ToListAsync();
+            return await _context.Author.ToListAsync();
         }
 
         public async Task<Author?> GetByIdAsync(int id)
         {
-            return await _context.Authors.FindAsync(id);
+            return await _context.Author.FindAsync(id);
         }
 
         public async Task CreateAsync(Author author)
@@ -39,7 +40,7 @@ namespace WebApp.Repositories.Implementations
 
         public async void DeleteByIdAsync(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
+            var author = await _context.Author.FindAsync(id);
             if (author is not null)
             {
                 _context.Remove(author);
@@ -48,7 +49,7 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<Author?> GetWithBooksAndInstancesByIdAsync(int id)
         {
-            return await _context.Authors
+            return await _context.Author
                 .Include(author => author.Books)
                 .ThenInclude(book => book.Instances)
                 .FirstOrDefaultAsync(a => a.Id == id);
@@ -61,13 +62,13 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<int> GetCountAsync()
         {
-            return await _context.Authors.CountAsync();
+            return await _context.Author.CountAsync();
         }
 
 
         private bool _disposed;
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!_disposed)
             {

@@ -46,6 +46,12 @@ public class BookDetailPO extends BasePO {
     @FindBy(how = How.CSS, using = ".actionLinkLite.bookPageGenreLink")
     private List<WebElement> genreTags;
 
+    @FindBy(how = How.CLASS_NAME, using = "modalOpened")
+    private WebElement modal;
+
+    @FindBy(how = How.CSS, using = ".modal__close button")
+    private WebElement modalCloseButton;
+
 
     public String getBookTitle() {
         waitUtils.staticWait(1000);
@@ -59,6 +65,13 @@ public class BookDetailPO extends BasePO {
         waitUtils.waitForElementClickable(moreButton);
         moreButton.click();
         log.info("<MORE BUTTON CLICKED>");
+    }
+
+    public void closeModalIfExists() {
+        waitUtils.staticWait(1000);
+        if(driverCommonUtil.doesElementExists(modal)) {
+            JsUtil.click(driver,modalCloseButton);
+        }
     }
 
     public String getSummary() {

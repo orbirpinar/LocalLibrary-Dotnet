@@ -9,9 +9,8 @@ using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Repositories.Implementations
 {
-    public class BookInstanceRepository: IBookInstanceRepository,IDisposable
+    internal sealed class BookInstanceRepository : IBookInstanceRepository, IDisposable
     {
-
         private readonly LibraryContext _context;
 
         public BookInstanceRepository(LibraryContext context)
@@ -21,17 +20,17 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<IEnumerable<BookInstance>> GetAllAsync()
         {
-            return await _context.BookInstances.ToListAsync();
+            return await _context.BookInstance.ToListAsync();
         }
 
         public async Task<BookInstance?> GetByIdAsync(Guid id)
         {
-            return await _context.BookInstances.FindAsync(id);
+            return await _context.BookInstance.FindAsync(id);
         }
 
         public async Task CreateAsync(BookInstance bookInstance)
         {
-            await _context.BookInstances.AddAsync(bookInstance);
+            await _context.BookInstance.AddAsync(bookInstance);
         }
 
         public void Update(BookInstance bookInstance)
@@ -39,10 +38,12 @@ namespace WebApp.Repositories.Implementations
             _context.Entry(bookInstance).State = EntityState.Modified;
         }
 
-        public async Task DeleteByIdAsync(Guid id)
+        public async Task<bool> DeleteByIdAsync(Guid id)
         {
             var bookInstance = await GetByIdAsync(id);
+            if (bookInstance is null) return false;
             _context.Remove(bookInstance);
+            return true;
         }
 
         public async Task SaveAsync()
@@ -52,33 +53,34 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<BookInstance?> GetWithBookAndBorrowerById(Guid id)
         {
-            return await _context.BookInstances
+            return await _context.BookInstance
                 .Include(bi => bi.Book)
                 .Include(bi => bi.Borrower)
-                .FirstAsync();
+                .Where(bi => bi.Id == id)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<BookInstance>> GetByBookId(int bookId)
         {
-            return await _context.BookInstances.Where(b => b.Book.Id == bookId)
+            return await _context.BookInstance.Where(b => b.Book.Id == bookId)
                 .ToListAsync();
         }
 
         public async Task<int> GetCountAvailableAsync()
         {
-            return await _context.BookInstances
+            return await _context.BookInstance
                 .Where(b => b.LoanStatus == LoanStatus.Available)
                 .CountAsync();
         }
 
         public async Task<int> GetCountAsync()
         {
-            return await _context.BookInstances.CountAsync();
+            return await _context.BookInstance.CountAsync();
         }
 
         private bool _disposed;
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!_disposed)
             {
@@ -96,6 +98,5 @@ namespace WebApp.Repositories.Implementations
             _context.Dispose();
             GC.SuppressFinalize(this);
         }
-
     }
 }

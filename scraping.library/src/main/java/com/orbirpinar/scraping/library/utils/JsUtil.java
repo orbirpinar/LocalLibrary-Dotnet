@@ -23,4 +23,9 @@ public class JsUtil {
         js = (JavascriptExecutor)  driver;
         js.executeScript("arguments[0].style.display = 'none';",element);
     }
+
+    public static void click(WebDriver driver, WebElement element) {
+        js = (JavascriptExecutor)  driver;
+        js.executeScript("arguments[0].click();",element);
+    }
 }

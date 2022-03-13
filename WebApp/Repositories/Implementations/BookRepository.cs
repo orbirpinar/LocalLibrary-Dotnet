@@ -21,7 +21,7 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
-            return await _context.Books
+            return await _context.Book
                 .Include(b => b.Author)
                 .Include(b => b.Instances)
                 .ToListAsync();
@@ -29,7 +29,7 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<Book?> GetByIdAsync(int id)
         {
-            return await _context.Books
+            return await _context.Book
                 .Include(b => b.Author)
                 .Include(b => b.Instances)
                 .Where(b => b.Id == id)
@@ -38,18 +38,28 @@ namespace WebApp.Repositories.Implementations
 
         public async Task CreateAsync(Book book)
         {
-            await _context.Books.AddAsync(book);
+            await _context.Book.AddAsync(book);
+        }
+
+        public async Task CreateOrUpdateAsync(Book book)
+        {
+            var bookExists =  _context.Book.AnyAsync(b => b.Title == book.Title).Result;
+            if (!bookExists)
+            {
+                await _context.Book.AddAsync(book);
+            }
+            
         }
 
         public void Update(int id, Book book)
         {
-            _context.Books.Update(book);
+            _context.Book.Update(book);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            _context.Books.Remove(book!);
+            var book = await _context.Book.FindAsync(id);
+            _context.Book.Remove(book!);
         }
 
         public async Task SaveAsync()
@@ -59,7 +69,7 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<int> GetCountAsync()
         {
-            return await _context.Books.CountAsync();
+            return await _context.Book.CountAsync();
         }
 
         private bool _disposed;

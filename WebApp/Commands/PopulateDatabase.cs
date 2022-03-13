@@ -7,11 +7,11 @@ namespace WebApp.Commands
     public class PopulateDatabase: IRequest<Unit>
     {
         
-        public PopulateDatabase(List<SeedData>? request)
+        public PopulateDatabase(SeedData? request)
         {
             Request = request;
         }
 
-        public List<SeedData>? Request { get; }
+        public SeedData? Request { get; }
     }
 }

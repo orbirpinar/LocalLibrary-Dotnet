@@ -3,30 +3,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace WebApp.Migrations
+namespace WebApp.Migrations.Library
 {
-    public partial class Initial : Migration
+    public partial class RemoveTableRemigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Authors",
+                name: "Author",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "Date", nullable: true),
                     DateOfDeath = table.Column<DateTime>(type: "Date", nullable: true),
                     Info = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Authors", x => x.Id);
+                    table.PrimaryKey("PK_Author", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Languages",
+                name: "Language",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -35,7 +35,7 @@ namespace WebApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Languages", x => x.Id);
+                    table.PrimaryKey("PK_Language", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,12 +66,12 @@ namespace WebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Books",
+                name: "Book",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Isbn = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AuthorId = table.Column<int>(type: "int", nullable: true),
@@ -79,21 +79,21 @@ namespace WebApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Books", x => x.Id);
+                    table.PrimaryKey("PK_Book", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Books_Authors_AuthorId",
+                        name: "FK_Book_Author_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "Authors",
+                        principalTable: "Author",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Books_Languages_LanguageId",
+                        name: "FK_Book_Language_LanguageId",
                         column: x => x.LanguageId,
-                        principalTable: "Languages",
+                        principalTable: "Language",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookInstances",
+                name: "BookInstance",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -105,21 +105,21 @@ namespace WebApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookInstances", x => x.Id);
+                    table.PrimaryKey("PK_BookInstance", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookInstances_Books_BookId",
+                        name: "FK_BookInstance_Book_BookId",
                         column: x => x.BookId,
-                        principalTable: "Books",
+                        principalTable: "Book",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_BookInstances_User_BorrowerId",
+                        name: "FK_BookInstance_User_BorrowerId",
                         column: x => x.BorrowerId,
                         principalTable: "User",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Genres",
+                name: "Genre",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -129,59 +129,73 @@ namespace WebApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Genres", x => x.Id);
+                    table.PrimaryKey("PK_Genre", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Genres_Books_BookId",
+                        name: "FK_Genre_Book_BookId",
                         column: x => x.BookId,
-                        principalTable: "Books",
+                        principalTable: "Book",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookInstances_BookId",
-                table: "BookInstances",
-                column: "BookId");
+                name: "IX_Author_Name",
+                table: "Author",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookInstances_BorrowerId",
-                table: "BookInstances",
-                column: "BorrowerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_AuthorId",
-                table: "Books",
+                name: "IX_Book_AuthorId",
+                table: "Book",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_LanguageId",
-                table: "Books",
+                name: "IX_Book_LanguageId",
+                table: "Book",
                 column: "LanguageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Genres_BookId",
-                table: "Genres",
+                name: "IX_Book_Title",
+                table: "Book",
+                column: "Title",
+                unique: true,
+                filter: "[Title] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookInstance_BookId",
+                table: "BookInstance",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookInstance_BorrowerId",
+                table: "BookInstance",
+                column: "BorrowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Genre_BookId",
+                table: "Genre",
                 column: "BookId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BookInstances");
+                name: "BookInstance");
 
             migrationBuilder.DropTable(
-                name: "Genres");
+                name: "Genre");
 
             migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "Books");
+                name: "Book");
 
             migrationBuilder.DropTable(
-                name: "Authors");
+                name: "Author");
 
             migrationBuilder.DropTable(
-                name: "Languages");
+                name: "Language");
         }
     }
 }

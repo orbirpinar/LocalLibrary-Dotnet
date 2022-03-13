@@ -3,17 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp.Data;
 
 #nullable disable
 
-namespace WebApp.Migrations
+namespace WebApp.Migrations.Library
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20220312235448_ManytoManyGenreAndBook")]
+    partial class ManytoManyGenreAndBook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,21 @@ namespace WebApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("BookGenre", b =>
+                {
+                    b.Property<int>("BooksId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenresId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BooksId", "GenresId");
+
+                    b.HasIndex("GenresId");
+
+                    b.ToTable("BookGenre");
+                });
 
             modelBuilder.Entity("WebApp.Models.Author", b =>
                 {
@@ -40,11 +57,15 @@ namespace WebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
+
+                    b.ToTable("Author");
                 });
 
             modelBuilder.Entity("WebApp.Models.Book", b =>
@@ -55,7 +76,7 @@ namespace WebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AuthorId")
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Isbn")
@@ -68,7 +89,7 @@ namespace WebApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -76,7 +97,11 @@ namespace WebApp.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("Books");
+                    b.HasIndex("Title")
+                        .IsUnique()
+                        .HasFilter("[Title] IS NOT NULL");
+
+                    b.ToTable("Book");
                 });
 
             modelBuilder.Entity("WebApp.Models.BookInstance", b =>
@@ -106,7 +131,7 @@ namespace WebApp.Migrations
 
                     b.HasIndex("BorrowerId");
 
-                    b.ToTable("BookInstances");
+                    b.ToTable("BookInstance");
                 });
 
             modelBuilder.Entity("WebApp.Models.Genre", b =>
@@ -117,17 +142,16 @@ namespace WebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("BookId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genre");
                 });
 
             modelBuilder.Entity("WebApp.Models.Language", b =>
@@ -143,7 +167,7 @@ namespace WebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Language");
                 });
 
             modelBuilder.Entity("WebApp.Models.User", b =>
@@ -204,11 +228,28 @@ namespace WebApp.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("BookGenre", b =>
+                {
+                    b.HasOne("WebApp.Models.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApp.Models.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("WebApp.Models.Book", b =>
                 {
                     b.HasOne("WebApp.Models.Author", "Author")
                         .WithMany("Books")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebApp.Models.Language", "Language")
                         .WithMany()
@@ -234,13 +275,6 @@ namespace WebApp.Migrations
                     b.Navigation("Borrower");
                 });
 
-            modelBuilder.Entity("WebApp.Models.Genre", b =>
-                {
-                    b.HasOne("WebApp.Models.Book", null)
-                        .WithMany("Genres")
-                        .HasForeignKey("BookId");
-                });
-
             modelBuilder.Entity("WebApp.Models.Author", b =>
                 {
                     b.Navigation("Books");
@@ -248,8 +282,6 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Models.Book", b =>
                 {
-                    b.Navigation("Genres");
-
                     b.Navigation("Instances");
                 });
 

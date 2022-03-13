@@ -25,6 +25,7 @@ public class BookDetailServiceImpl implements BookDetailService {
     @Override
     public BookDto getData() {
         bookDetailPO.initElements();
+        bookDetailPO.closeModalIfExists();
         String bookTitle = bookDetailPO.getBookTitle();
         Optional<String> isbn = bookDetailPO.getIsbn();
         String summary = bookDetailPO.getSummary();

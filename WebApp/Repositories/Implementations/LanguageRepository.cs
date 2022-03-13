@@ -8,9 +8,8 @@ using WebApp.Repositories.Interfaces;
 
 namespace WebApp.Repositories.Implementations
 {
-    public class LanguageRepository:ILanguageRepository,IDisposable
+    public class LanguageRepository : ILanguageRepository, IDisposable
     {
-
         private readonly LibraryContext _context;
 
         public LanguageRepository(LibraryContext context)
@@ -20,12 +19,12 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<IEnumerable<Language>> GetAllAsync()
         {
-            return await _context.Languages.ToListAsync();
+            return await _context.Language.ToListAsync();
         }
 
         public async Task<Language?> GetByIdAsync(int id)
         {
-           return await _context.Languages.FindAsync(id);
+            return await _context.Language.FindAsync(id);
         }
 
         public async Task CreateAsync(Language language)
@@ -35,8 +34,11 @@ namespace WebApp.Repositories.Implementations
 
         public async Task DeleteByIdAsync(int id)
         {
-            var language = await _context.Languages.FindAsync(id);
-            _context.Languages.Remove(language);
+            var language = await _context.Language.FindAsync(id);
+            if (language is not null)
+            {
+                _context.Language.Remove(language);
+            }
         }
 
         public void Update(Language language)
@@ -50,7 +52,8 @@ namespace WebApp.Repositories.Implementations
         }
 
 
-        private bool  _disposed;
+        private bool _disposed;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -69,6 +72,5 @@ namespace WebApp.Repositories.Implementations
             _context.Dispose();
             GC.SuppressFinalize(this);
         }
-
     }
 }

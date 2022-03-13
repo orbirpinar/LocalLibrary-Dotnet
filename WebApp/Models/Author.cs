@@ -16,7 +16,7 @@ namespace WebApp.Models
         [Column(TypeName = "Date")]
         public DateTime? DateOfDeath { get; set; }
         
-        public String? Info { get; set; }
+        public string? Info { get; set; }
 
         public IEnumerable<Book>? Books { get; set; }
 

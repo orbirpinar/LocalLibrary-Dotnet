@@ -9,11 +9,11 @@ using WebApp.Data;
 
 #nullable disable
 
-namespace WebApp.Migrations.Auth
+namespace WebApp.Migrations
 {
     [DbContext(typeof(AuthContext))]
-    [Migration("20220306174426_Initial")]
-    partial class Initial
+    [Migration("20220312234144_ReCreateAgain")]
+    partial class ReCreateAgain
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -190,7 +190,7 @@ namespace WebApp.Migrations.Auth
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AuthorId")
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Isbn")
@@ -407,7 +407,9 @@ namespace WebApp.Migrations.Auth
                 {
                     b.HasOne("WebApp.Models.Author", "Author")
                         .WithMany("Books")
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebApp.Models.Language", "Language")
                         .WithMany()

@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using NuGet.Common;
 using WebApp.Commands;
 using WebApp.Seeder;
 
@@ -21,10 +20,9 @@ namespace WebApp.Handlers
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(PopulateDatabase request, CancellationToken cancellationToken)
+        public  async Task<Unit> Handle(PopulateDatabase request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Mediator work!!");
-            await _seederRepository.SaveAll(request.Request);
+            await _seederRepository.SaveAsync(request.Request);
             return Unit.Value;
         }
     }
