@@ -30,10 +30,10 @@
                 </a>
             </td>
             <td>
-                @author.DateOfBirth?.ToString("dd/MM/yyyy")
+                @author.DateOfBirth?.ToString("yyyy")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => author.DateOfDeath)
+                @author.DateOfDeath?.ToString("yyyy")
             </td>
             <td>
                 @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@

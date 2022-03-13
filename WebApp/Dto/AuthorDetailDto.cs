@@ -14,6 +14,8 @@ namespace WebApp.Dto
         public DateTime? DateOfBirth { get; set; }
 
         public DateTime? DateOfDeath { get; set; }
+        
+        public string? Info { get; set; }
 
         public IEnumerable<BookViewDto> Books { get; set; }
     }

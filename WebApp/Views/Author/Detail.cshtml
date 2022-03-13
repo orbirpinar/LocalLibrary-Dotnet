@@ -7,7 +7,8 @@
   
 
 <h1>Author: @Model!.FirstName @Model.LastName</h1>
-<p>@Model.DateOfBirth - @Model.DateOfDeath</p>
+<p>@Model.DateOfBirth?.ToString("yyyy") - @Model.DateOfDeath?.ToString("yyyy")</p>
+<p>@Model.Info</p>
 
 <div style="margin-left:20px;margin-top:20px">
 <h4>Books</h4>
