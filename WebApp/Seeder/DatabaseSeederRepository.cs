@@ -31,7 +31,7 @@ namespace WebApp.Seeder
                 }
 
                 var author = _mapper.Map<Author>(seedData.Author);
-                var listOfGenre = await MapGenres(seedData);
+                await SetGenres(seedData,book);
 
 
                 book.Author = author;
@@ -41,13 +41,12 @@ namespace WebApp.Seeder
                     book.Author = existingAuthor;
                 }
 
-                book.Genres = listOfGenre;
                 await _context.Book.AddAsync(book);
                 await _context.SaveChangesAsync();
             }
         }
 
-        private async Task<List<Genre>?> MapGenres(SeedData? seedData)
+        private async Task SetGenres(SeedData? seedData,Book book)
         {
             var listOfGenre = new List<Genre>();
             foreach (var bookGenre in seedData!.Book.Genres)
@@ -65,8 +64,7 @@ namespace WebApp.Seeder
                     });
                 }
             }
-
-            return listOfGenre;
+            book.Genres = listOfGenre;
         }
 
         private bool CheckAuthorExists(Author author)

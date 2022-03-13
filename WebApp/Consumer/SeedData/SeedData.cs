@@ -1,4 +1,5 @@
 using WebApp.Consumer;
+using WebApp.Consumer.SeedData;
 
 namespace WebApp.Dto
 {

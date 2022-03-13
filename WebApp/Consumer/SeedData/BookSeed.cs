@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using WebApp.Consumer.SeedData;
-using WebApp.Models;
 
-namespace WebApp.Consumer
+namespace WebApp.Consumer.SeedData
 {
-    public class BookSeed
+    public sealed class BookSeed
     {
         
         
