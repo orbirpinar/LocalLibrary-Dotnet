@@ -18,6 +18,12 @@ public class BookDto {
     @JsonProperty("Isbn")
     private String isbn;
 
+    @JsonProperty("SmallCoverLink")
+    private String smallCoverLink;
+
+    @JsonProperty("MediumCoverLink")
+    private String mediumCoverLink;
+
     @JsonProperty("Genres")
     private List<GenreDto> genres;
 }

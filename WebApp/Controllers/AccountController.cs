@@ -60,7 +60,8 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Login(Login loginModel, string? returnUrl)
         {
             if (!ModelState.IsValid) return View();
-            var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, false);
+            var user = await _userRepository.GetByEmailAsync(loginModel.Email);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, loginModel.Password, loginModel.RememberMe, false);
             if (result.Succeeded)
             {
                 if (!string.IsNullOrEmpty(returnUrl))

@@ -31,6 +31,9 @@ public class BookListPO extends BasePO{
     @FindBy(how = How.CLASS_NAME,using = "bookTitle")
     private List<WebElement> detailLinks;
 
+    @FindBy(how = How.CLASS_NAME, using = "bookCover")
+    private WebElement smallCoverImage;
+
     public void clickDetailLink() {
         waitUtils.staticWait(1000);
         waitUtils.waitForElementClickable(detailLink);
@@ -42,5 +45,16 @@ public class BookListPO extends BasePO{
         PageFactory.initElements(driverCommonUtil.getDriver(),this);
         return detailLinks;
     }
+
+    public String getSmallCoverLink() {
+        waitUtils.staticWait(500);
+        waitUtils.waitForElementToBeVisible(smallCoverImage);
+        if(driverCommonUtil.doesElementExists(smallCoverImage)) {
+            return smallCoverImage.getAttribute("src");
+        }
+        return "";
+    }
+
+
 
 }

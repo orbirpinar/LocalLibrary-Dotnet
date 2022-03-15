@@ -9,4 +9,6 @@ public interface BookService {
     BookDto getData();
     void clickAuthorDetailLink();
     void clickBookDetail();
+
+    String getSmallCoverImageLink();
 }

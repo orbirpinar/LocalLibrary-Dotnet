@@ -20,23 +20,24 @@ public class BookServiceImpl implements BookService {
     public BookServiceImpl(BookDetailPO bookDetailPO, BookListPO bookListPO) {
         this.bookDetailPO = bookDetailPO;
         this.bookListPO = bookListPO;
+        bookDetailPO.initElements();
+        bookListPO.initElements();
     }
-
-
 
 
     @Override
     public BookDto getData() {
-        bookDetailPO.initElements();
         bookDetailPO.closeModalIfExists();
         String bookTitle = bookDetailPO.getBookTitle();
         Optional<String> isbn = bookDetailPO.getIsbn();
         String summary = bookDetailPO.getSummary();
         List<String> genres = bookDetailPO.getGenres();
+        String mediumCoverLink = bookDetailPO.getMediumCoverLink();
         BookDto bookDto = new BookDto();
         isbn.ifPresent(bookDto::setIsbn);
         bookDto.setTitle(bookTitle);
         bookDto.setSummary(summary);
+        bookDto.setMediumCoverLink(mediumCoverLink);
         List<GenreDto> genreDtos = Mapper.mapAll(genres, GenreDto.class);
         bookDto.setGenres(genreDtos);
         return bookDto;
@@ -49,7 +50,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void clickBookDetail() {
-        bookListPO.initElements();
         bookListPO.clickDetailLink();
+    }
+
+    @Override
+    public String getSmallCoverImageLink() {
+        return bookListPO.getSmallCoverLink();
     }
 }

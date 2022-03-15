@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Models
 {
@@ -13,6 +12,10 @@ namespace WebApp.Models
         public Author? Author { get; set; }
         
         public int AuthorId { get; set; }
+
+        public string? SmallCoverLink { get; set; }
+
+        public string? MediumCoverLink { get; set; }
         public ICollection<Genre>? Genres { get; set; }
         public Language? Language { get; set; }
         public IEnumerable<BookInstance>? Instances { get ; set; }

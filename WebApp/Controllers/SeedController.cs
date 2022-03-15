@@ -27,7 +27,7 @@ namespace WebApp.Controllers
             var result = _producerService.Send(searchParamDto);
             if (result)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction(nameof(Search));
             }
             
             ModelState.AddModelError("","Unexpected result!");

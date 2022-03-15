@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using WebApp.Configuration;
 using WebApp.Consumer;
 using WebApp.Data;
+using WebApp.Data.Identity;
 using WebApp.Models;
 using WebApp.Producer;
 using WebApp.Repositories.Implementations;
@@ -28,7 +29,9 @@ builder.Services.AddDbContext<LibraryContext>(options =>
 );
 builder.Services.AddDbContext<AuthContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("AuthContextMsSql")); });
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AuthContext>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 // Repositories
 builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IBookRepository, BookRepository>();
@@ -38,20 +41,21 @@ builder.Services.AddScoped<IBookInstanceRepository, BookInstanceRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddTransient<ISeederRepository, DatabaseSeederRepository>();
+
+
 builder.Services.Configure<RabbitMqConfiguration>(a => builder.Configuration.GetSection(nameof(RabbitMqConfiguration)).Bind(a));
 builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 builder.Services.AddSingleton<IConsumerService, ConsumerService>();
 builder.Services.AddHostedService<ConsumerHostedService>();
 builder.Services.AddSingleton<IProducerService, ProducerService>();
+builder.Services.AddScoped<AuthContextSeed>();
+
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var userManager = services.GetRequiredService<UserManager<User>>();
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-    DbInitializer.SeedUser(userManager, roleManager);
-}
+var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+var authSeeder = services.GetRequiredService<AuthContextSeed>();
+await authSeeder.SeedAdminUser();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -60,6 +64,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

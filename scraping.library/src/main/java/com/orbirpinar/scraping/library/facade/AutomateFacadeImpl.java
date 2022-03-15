@@ -45,8 +45,9 @@ public class AutomateFacadeImpl implements AutomateFacade {
         for (int i = 1; i <= 1; i++) {
             bookListPO.navigateTo(BASE_URL + "/list/show/1.Best_Books_Ever?page=" + i);
             for (int j = 51; j < 55; j++) {
+                String smallCoverLink = bookService.getSmallCoverImageLink();
                 driverCommonUtil.click(bookListPO.getListOfDetailLink().get(j));
-                sendData();
+                sendData(smallCoverLink);
                 bookListPO.navigateTo(BASE_URL + "/list/show/1.Best_Books_Ever?page=" + i);
             }
         }
@@ -57,18 +58,23 @@ public class AutomateFacadeImpl implements AutomateFacade {
     @RabbitListener(queues = "${rabbitMq.queue.searchData}")
     public void scrapingByBookTitle(SearchParamDto searchParamDto) {
         bookListPO.navigateTo(BASE_URL + "/search?q=" + searchParamDto.getTitle());
+        String smallCoverImageLink = bookService.getSmallCoverImageLink();
         bookService.clickBookDetail();
-        sendData();
+        sendData(smallCoverImageLink);
+
     }
 
-    private void sendData() {
+    private void sendData(String smallCoverImageLink) {
         ScrapingResponseDto scrapingResponseDto = new ScrapingResponseDto();
         BookDto bookDto = bookService.getData();
+        bookDto.setSmallCoverLink(smallCoverImageLink);
         bookService.clickAuthorDetailLink();
         AuthorDto authorDto = authorDetailService.getData();
         scrapingResponseDto.setBook(bookDto);
         scrapingResponseDto.setAuthor(authorDto);
+
         // send to rabbitmq
         producer.send(scrapingResponseDto);
     }
+
 }

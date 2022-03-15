@@ -9,6 +9,10 @@ namespace WebApp.Consumer.SeedData
         public string Title { get; set; }
         public string? Summary { get; set; }
         public string? Isbn { get; set; }
+        
+        public string? SmallCoverLink { get; set; }
+
+        public string? MediumCoverLink { get; set; }
         public ICollection<GenreSeed> Genres { get; set; }
     }
 }

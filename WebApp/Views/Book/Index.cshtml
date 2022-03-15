@@ -10,6 +10,8 @@
     <thead>
     <tr>
         <th>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
@@ -34,6 +36,12 @@
     @foreach (var book in Model)
     {
         <tr>
+            <td>
+                @if (!string.IsNullOrEmpty(book.SmallCoverLink))
+                {
+                    <img src="@book.SmallCoverLink" alt=""/>
+                }
+            </td>
             <td>
                 <a class="nav-link" asp-action="Detail" asp-route-id="@book.Id">
                     @Html.DisplayFor(modelItem => book.Title)

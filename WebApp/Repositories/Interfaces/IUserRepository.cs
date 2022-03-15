@@ -15,6 +15,8 @@ namespace WebApp.Repositories.Interfaces
         Task<bool> UpdateAsync(User user);
         Task<bool> DeleteByIdAsync(string id);
 
+        Task<User> GetByEmailAsync(string email);
+
         Task<IdentityResult> AssignRoleAsync(User user, string roleName);
 
         Task<IList<string>> GetRoleNamesAsync(User user);

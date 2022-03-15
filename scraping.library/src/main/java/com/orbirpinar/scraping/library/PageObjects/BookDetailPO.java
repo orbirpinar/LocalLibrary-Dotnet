@@ -55,6 +55,9 @@ public class BookDetailPO extends BasePO {
     @FindBy(how = How.ID, using = "bookDataBoxShow")
     private WebElement bookDataBoxShow;
 
+    @FindBy(how = How.ID, using = "coverImage")
+    private WebElement mediumCoverImageTag;
+
 
     public String getBookTitle() {
         waitUtils.staticWait(1000);
@@ -124,6 +127,15 @@ public class BookDetailPO extends BasePO {
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    public String getMediumCoverLink() {
+        waitUtils.staticWait(500);
+        if(driverCommonUtil.doesElementExists(mediumCoverImageTag)) {
+            waitUtils.waitForElementToBeVisible(mediumCoverImageTag);
+            return mediumCoverImageTag.getAttribute("src");
+        }
+        return "";
     }
 
     private void clickMoreDataButton(){

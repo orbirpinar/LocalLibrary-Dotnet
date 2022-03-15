@@ -55,6 +55,11 @@ namespace WebApp.Repositories.Implementations
             return true;
         }
 
+        public Task<User> GetByEmailAsync(string email)
+        {
+            return _userManager.FindByEmailAsync(email);
+        }
+
         public async Task<IdentityResult> AssignRoleAsync(User user, string roleName)
         {
             return await _userManager.AddToRoleAsync(user, roleName);
