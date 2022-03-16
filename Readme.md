@@ -15,6 +15,13 @@ And To spin up postgres docker image
 
 `docker-compose -f docker-compose.postgres.yml up -d`
 
+
+**_Admin Credentials To Access To Web App_**
+
+| Email           |  Password  |  
+| -------------   |:----------:| 
+| admin@admin.com | 123_Secret |  
+
 ## Java Selenium Bot-Process
 
 In order to populating to author and books table
