@@ -24,12 +24,26 @@ Simply open the terminal
 
 `cd scraping.library`
 
-- Run Project 
+- To Run Project 
 
 `mvn spring-boot:run`
 
-and then hit the 
-`http://localhost:8080/seed` from browser and wait.
+### For scraping best books
+Hit the url from a browser
+
+`http://localhost:8080/seed` 
+
+and wait
+
+### For scraping specific book by title
+- Open to mvc project and go to seeder url
+- Type desired book title and submit
+- After one or two minutes the book and book's author information should be saved to the database
+- Check out the gif below
+
+![Scraping By Title](./screenshots/seeder_library.gif)
+
+
 
 ### Database Populating Lifecycle
 
