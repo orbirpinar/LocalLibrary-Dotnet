@@ -1,5 +1,4 @@
 using System;
-using System.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -48,13 +47,14 @@ builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 builder.Services.AddSingleton<IConsumerService, ConsumerService>();
 builder.Services.AddHostedService<ConsumerHostedService>();
 builder.Services.AddSingleton<IProducerService, ProducerService>();
-builder.Services.AddScoped<AuthContextSeed>();
+builder.Services.AddScoped<AuthContextSeeder>();
+
 
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
-var authSeeder = services.GetRequiredService<AuthContextSeed>();
+var authSeeder = services.GetRequiredService<AuthContextSeeder>();
 await authSeeder.SeedAdminUser();
 
 // Configure the HTTP request pipeline.

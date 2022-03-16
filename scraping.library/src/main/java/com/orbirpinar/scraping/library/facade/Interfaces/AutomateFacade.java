@@ -10,6 +10,6 @@ import java.util.List;
 public interface AutomateFacade {
 
     void scrapingBestBooks();
-    void scrapingByBookTitle(SearchParamDto searchParamDto);
+    void scrapingByBookTitle(SearchParamDto searchParamDto) throws Exception;
 
 }

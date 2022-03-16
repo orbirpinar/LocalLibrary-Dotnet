@@ -6,12 +6,12 @@ using WebApp.Models;
 
 namespace WebApp.Data.Identity
 {
-    public class AuthContextSeed
+    public class AuthContextSeeder
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AuthContextSeed(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public AuthContextSeeder(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;

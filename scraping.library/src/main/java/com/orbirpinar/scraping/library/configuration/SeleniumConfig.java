@@ -33,6 +33,7 @@ public class SeleniumConfig {
 
     private ChromeOptions getRemoteOptions() {
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-setuid-sandbox");

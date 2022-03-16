@@ -1,3 +1,15 @@
+spring:
+  rabbitmq:
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3s
+          max-attempts: 2
+          max-interval: 10s
+          multiplier: 2
+
+
 selenium:
   url:
     chrome: http://localhost:4444/wd/hub

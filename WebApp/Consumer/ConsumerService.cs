@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using MediatR;
@@ -9,7 +8,6 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using WebApp.Commands;
 using WebApp.Configuration;
-using WebApp.Seeder;
 
 namespace WebApp.Consumer
 {

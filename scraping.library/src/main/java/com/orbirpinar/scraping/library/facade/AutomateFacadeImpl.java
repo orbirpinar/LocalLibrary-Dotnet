@@ -56,7 +56,7 @@ public class AutomateFacadeImpl implements AutomateFacade {
 
     @Override
     @RabbitListener(queues = "${rabbitMq.queue.searchData}")
-    public void scrapingByBookTitle(SearchParamDto searchParamDto) {
+    public void scrapingByBookTitle(SearchParamDto searchParamDto) throws Exception {
         bookListPO.navigateTo(BASE_URL + "/search?q=" + searchParamDto.getTitle());
         String smallCoverImageLink = bookService.getSmallCoverImageLink();
         bookService.clickBookDetail();
