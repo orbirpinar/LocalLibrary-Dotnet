@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using RabbitMQ.Client;
 using WebApp.Models;
 
-namespace WebApp.Data
+namespace WebApp.Data.Library
 {
     public class LibraryContext : DbContext
     {

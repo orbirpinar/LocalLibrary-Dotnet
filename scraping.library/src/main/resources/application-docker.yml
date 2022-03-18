@@ -1,0 +1,21 @@
+spring:
+  rabbitmq:
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3s
+          max-attempts: 2
+          max-interval: 10s
+          multiplier: 2
+
+
+selenium:
+  url:
+    chrome: http://selenium_chrome:4444/wd/hub
+
+base-url: https://www.goodreads.com
+
+rabbitMq:
+  queue:
+    searchData: "searchDataQueue"

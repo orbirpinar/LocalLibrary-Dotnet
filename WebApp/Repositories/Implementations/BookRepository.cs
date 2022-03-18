@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
+using WebApp.Data.Library;
 using WebApp.Models;
 using WebApp.Repositories.Interfaces;
 

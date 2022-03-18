@@ -1,0 +1,54 @@
+services:
+  
+  selenium-chrome:
+    container_name: selenium_chrome
+    image: selenium/standalone-chrome-debug
+    ports:
+      - 4444:4444
+      - 5900:5900
+    networks:
+      - local-library
+
+  mssql:
+    container_name: library_mssql
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      MSSQL_SA_PASSWORD: "P@ssw0rD1234"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1401:1433"
+    networks:
+      - local-library
+  
+  postgres:
+    container_name: library_postgres
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-libadmin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secret}
+      PGDATA: /data/postgres
+    volumes:
+      - library_postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - local-library
+    restart: unless-stopped
+
+    
+  rabbitmq:
+    image: rabbitmq:3.9.13-management-alpine
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - local-library
+
+volumes:
+  library_postgres:
+
+networks:
+  local-library:
+    name: local-library
+  

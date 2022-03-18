@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
+using WebApp.Data.Library;
 using WebApp.Dto;
 using WebApp.Models;
 

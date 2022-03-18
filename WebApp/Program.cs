@@ -10,6 +10,7 @@ using WebApp.Configuration;
 using WebApp.Consumer;
 using WebApp.Data;
 using WebApp.Data.Identity;
+using WebApp.Data.Library;
 using WebApp.Models;
 using WebApp.Producer;
 using WebApp.Repositories.Implementations;
@@ -22,11 +23,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<LibraryContext>(options =>
-    // options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContextPostgres"))
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryContextMsSql"))
+
+builder.Services.AddDbContext<LibraryContext>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContextPostgres")); }
 );
-builder.Services.AddDbContext<AuthContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("AuthContextMsSql")); });
+builder.Services.AddDbContext<AuthContext>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("AuthContextPostgres")); });
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AuthContext>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

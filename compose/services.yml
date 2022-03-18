@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  scrapingapp:
+    container_name: library_scraping_app
+    build:
+      context: ../scraping.library/
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    ports:
+      - "8080:8080"
+    networks:
+      - local-library
+  webapp:
+    container_name: library_app
+    build:
+      context: ../
+      dockerfile: ./WebApp/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 5000:80
+    networks:
+      - local-library
+
+networks:
+  local-library:
+    name: local-library
+    external: true
