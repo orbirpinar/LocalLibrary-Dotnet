@@ -1,8 +1,11 @@
 # .Net Mvc Library Project
 
+## LOCAL ENVIRONMENT
+
 To spin up mssql docker image
 
 `docker-compose -f docker-compose.mssql.yml up -d`
+
 
 Or If you want to use postgres You should change AddDbContext in Program.cs
 ```
@@ -15,14 +18,37 @@ And To spin up postgres docker image
 
 `docker-compose -f docker-compose.postgres.yml up -d`
 
+---
+## DOCKER ENVIRONMENT
 
+- Go to compose directory
+
+`cd compose`
+
+- First build and run databases, selenium and rabbitmq
+
+`docker-compose -f infrastructure.yml up -d --build`
+
+- Second build and run spring and .net app
+
+`docker-compose -f services.yml up -d --build`
+
+- you can access web application --> `localhost:5000`
+- and scraping app --> `localhost:8080`
+
+---
 **_Admin Credentials To Access To Web App_**
 
 | Email           |  Password  |  
 | -------------   |:----------:| 
 | admin@admin.com | 123_Secret |  
-
+---
 ## Java Selenium Bot-Process
+To spin up RabbitMq and selenium driver
+
+`cd scraping.library`
+
+`docker-compose up -d`
 
 In order to populating to author and books table
 Simply open the terminal 
@@ -50,6 +76,7 @@ and wait
 
 ![Scraping By Title](./screenshots/seeder_library.gif)
 
+---
 
 
 ### Database Populating Lifecycle
