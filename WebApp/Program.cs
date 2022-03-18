@@ -9,8 +9,6 @@ using Microsoft.Extensions.Hosting;
 using WebApp.Configuration;
 using WebApp.Consumer;
 using WebApp.Data;
-using WebApp.Data.Identity;
-using WebApp.Data.Library;
 using WebApp.Models;
 using WebApp.Producer;
 using WebApp.Repositories.Implementations;
@@ -24,10 +22,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-builder.Services.AddDbContext<LibraryContext>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContextPostgres")); }
+builder.Services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryContextPostgres")); }
 );
-builder.Services.AddDbContext<AuthContext>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("AuthContextPostgres")); });
-builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AuthContext>();
+builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -47,14 +44,14 @@ builder.Services.AddSingleton<IRabbitMqService, RabbitMqService>();
 builder.Services.AddSingleton<IConsumerService, ConsumerService>();
 builder.Services.AddHostedService<ConsumerHostedService>();
 builder.Services.AddSingleton<IProducerService, ProducerService>();
-builder.Services.AddScoped<AuthContextSeeder>();
+builder.Services.AddScoped<DatabaseSeeder>();
 
 
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
-var authSeeder = services.GetRequiredService<AuthContextSeeder>();
+var authSeeder = services.GetRequiredService<DatabaseSeeder>();
 await authSeeder.SeedAdminUser();
 
 // Configure the HTTP request pipeline.

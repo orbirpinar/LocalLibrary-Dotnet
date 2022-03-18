@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Data;
-using WebApp.Data.Library;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -16,10 +15,10 @@ namespace WebApp.Controllers
     public class UserBookInstanceController: Controller
     {
 
-        private readonly LibraryContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
 
-        public UserBookInstanceController(LibraryContext context, UserManager<User> userManager)
+        public UserBookInstanceController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;

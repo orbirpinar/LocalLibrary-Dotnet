@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Data.Library;
+using WebApp.Data;
 using WebApp.Models;
 using WebApp.Repositories.Interfaces;
 
@@ -11,9 +11,9 @@ namespace WebApp.Repositories.Implementations
 {
     internal sealed class BookInstanceRepository : IBookInstanceRepository, IDisposable
     {
-        private readonly LibraryContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BookInstanceRepository(LibraryContext context)
+        public BookInstanceRepository(ApplicationDbContext context)
         {
             _context = context;
         }

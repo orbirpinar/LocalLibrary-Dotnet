@@ -1,11 +1,12 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 
-namespace WebApp.Data.Library
+namespace WebApp.Data
 {
-    public class LibraryContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
@@ -17,6 +18,7 @@ namespace WebApp.Data.Library
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
             builder.Entity<Book>().HasIndex(b => b.Title).IsUnique();
             builder.Entity<Author>().HasIndex(a => a.Name).IsUnique();
             builder.Entity<Genre>().HasIndex(g => g.Name).IsUnique();

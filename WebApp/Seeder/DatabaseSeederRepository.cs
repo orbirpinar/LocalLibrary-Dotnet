@@ -5,7 +5,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
-using WebApp.Data.Library;
 using WebApp.Dto;
 using WebApp.Models;
 
@@ -13,10 +12,10 @@ namespace WebApp.Seeder
 {
     public class DatabaseSeederRepository : ISeederRepository
     {
-        private readonly LibraryContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public DatabaseSeederRepository(LibraryContext context, IMapper mapper)
+        public DatabaseSeederRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
-using WebApp.Data.Library;
 using WebApp.Models;
 using WebApp.Repositories.Interfaces;
 
@@ -12,9 +11,9 @@ namespace WebApp.Repositories.Implementations
 {
     public class BookRepository : IBookRepository, IDisposable
     {
-        private readonly LibraryContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BookRepository(LibraryContext context)
+        public BookRepository(ApplicationDbContext context)
         {
             _context = context;
         }

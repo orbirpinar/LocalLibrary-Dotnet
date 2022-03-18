@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using WebApp.Models;
 
-namespace WebApp.Data.Identity
+namespace WebApp.Data
 {
-    public class AuthContextSeeder
+    public class DatabaseSeeder
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AuthContextSeeder(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public DatabaseSeeder(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;

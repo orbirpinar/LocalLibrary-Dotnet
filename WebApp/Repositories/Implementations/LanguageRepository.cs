@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
-using WebApp.Data.Library;
 using WebApp.Models;
 using WebApp.Repositories.Interfaces;
 
@@ -11,9 +10,9 @@ namespace WebApp.Repositories.Implementations
 {
     public class LanguageRepository : ILanguageRepository, IDisposable
     {
-        private readonly LibraryContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public LanguageRepository(LibraryContext context)
+        public LanguageRepository(ApplicationDbContext context)
         {
             _context = context;
         }
