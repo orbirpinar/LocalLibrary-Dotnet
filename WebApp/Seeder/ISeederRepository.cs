@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApp.Dto;
+using WebApp.Consumer.SeedData;
 
 namespace WebApp.Seeder
 {

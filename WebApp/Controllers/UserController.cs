@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +29,10 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Detail(string id)
         {
             var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
             var roles = await _userRepository.GetRoleNamesAsync(user);
             var userViewModel = new UserViewModel
             {
@@ -70,6 +73,10 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid) return View();
             var user = await _userRepository.GetByIdAsync(userId);
+            if (user is null)
+            {
+                return NotFound();
+            }
             var result = await _userRepository.AssignRoleAsync(user, roleModel.Name);
             if (result.Succeeded)
             {

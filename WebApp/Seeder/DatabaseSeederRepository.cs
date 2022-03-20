@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Consumer.SeedData;
 using WebApp.Data;
-using WebApp.Dto;
 using WebApp.Models;
 
 namespace WebApp.Seeder
@@ -31,7 +30,7 @@ namespace WebApp.Seeder
             }
 
             var author = _mapper.Map<Author>(seedData.Author);
-            await SetGenres(seedData,book);
+            await SetGenres(seedData, book);
 
 
             book.Author = author;
@@ -47,10 +46,10 @@ namespace WebApp.Seeder
             return seedData;
         }
 
-        private async Task SetGenres(SeedData? seedData,Book book)
+        private async Task SetGenres(SeedData seedData, Book book)
         {
             var listOfGenre = new List<Genre>();
-            foreach (var bookGenre in seedData!.Book.Genres)
+            foreach (var bookGenre in seedData.Book.Genres!)
             {
                 var existingGenre = await _context.Genre.FirstOrDefaultAsync(g => g.Name == bookGenre.Name);
                 if (existingGenre != null)
@@ -65,6 +64,7 @@ namespace WebApp.Seeder
                     });
                 }
             }
+
             book.Genres = listOfGenre;
         }
 

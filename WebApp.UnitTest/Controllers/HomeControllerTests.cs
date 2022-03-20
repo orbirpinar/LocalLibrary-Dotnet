@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Moq;
 using WebApp.Controllers;
 using WebApp.Repositories.Interfaces;
@@ -13,12 +12,11 @@ namespace WebApp.UnitTest.Controllers
         private readonly HomeController _sut;
         private readonly Mock<IBookRepository> _bookRepo = new();
         private readonly Mock<IAuthorRepository> _authorRepo = new();
-        private readonly Mock<ILogger<HomeController>> _logger = new();
         private readonly Mock<IBookInstanceRepository> _bookInstanceRepo = new();
 
         public HomeControllerTests()
         {
-            _sut = new HomeController(_logger.Object, _authorRepo.Object, _bookInstanceRepo.Object, _bookRepo.Object);
+            _sut = new HomeController(_authorRepo.Object, _bookInstanceRepo.Object, _bookRepo.Object);
         }
         
         

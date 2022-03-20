@@ -22,14 +22,12 @@ namespace WebApp.Controllers
             _languageRepository = languageRepository;
         }
 
-        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Index()
         {
             var books = await _bookRepository.GetAllAsync();
             return View(books);
         }
 
-        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Detail(int id)
         {
             var book = await _bookRepository.GetByIdAsync(id);

@@ -10,11 +10,11 @@ namespace WebApp.Data
         {
         }
 
-        public DbSet<Author> Author { get; set; }
-        public DbSet<Book> Book { get; set; }
-        public DbSet<BookInstance> BookInstance { get; set; }
-        public DbSet<Genre> Genre { get; set; }
-        public DbSet<Language> Language { get; set; }
+        public DbSet<Author> Author { get; set; } = null!;
+        public DbSet<Book> Book { get; set; } = null!;
+        public DbSet<BookInstance> BookInstance { get; set; } = null!;
+        public DbSet<Genre> Genre { get; set; } = null!;
+        public DbSet<Language> Language { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

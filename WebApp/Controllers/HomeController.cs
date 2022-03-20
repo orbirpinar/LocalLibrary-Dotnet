@@ -1,10 +1,6 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using WebApp.Data;
 using WebApp.Models;
 using WebApp.Repositories.Interfaces;
 
@@ -12,14 +8,12 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IBookRepository _bookRepository;
         private readonly IBookInstanceRepository _bookInstanceRepository;
         private readonly IAuthorRepository _authorRepository;
 
-        public HomeController(ILogger<HomeController> logger, IAuthorRepository authorRepository, IBookInstanceRepository bookInstanceRepository, IBookRepository bookRepository)
+        public HomeController(IAuthorRepository authorRepository, IBookInstanceRepository bookInstanceRepository, IBookRepository bookRepository)
         {
-            _logger = logger;
             _authorRepository = authorRepository;
             _bookInstanceRepository = bookInstanceRepository;
             _bookRepository = bookRepository;

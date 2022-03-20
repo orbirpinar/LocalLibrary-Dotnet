@@ -21,11 +21,11 @@
         </thead>
         <tbody>
         @{
-            foreach (var instance in Model)
+            foreach (var instance in Model!)
             {
                 <tr>
                     <th scope="row">1</th>
-                    <td>@instance.Book.Title</td>
+                    <td>@instance.Book!.Title</td>
                     <td>@instance.Id</td>
                     <td>@instance.Book.Isbn</td>
                     <td>@instance.DueBack</td>

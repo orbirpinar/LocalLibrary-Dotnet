@@ -1,6 +1,6 @@
 using System;
 
-namespace WebApp.Consumer
+namespace WebApp.Consumer.SeedData
 {
     public class AuthorSeed
     {

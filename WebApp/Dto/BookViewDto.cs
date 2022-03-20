@@ -15,9 +15,9 @@ namespace WebApp.Dto
         public string? SmallCoverLink { get; set; }
 
         public string? MediumCoverLink { get; set; }
-        
-        public ICollection<Genre> Genres { get; set; }
-        public Language Language { get; set; }
+
+        public ICollection<Genre> Genres { get; set; } = default!;
+        public Language? Language { get; set; }
 
         public IEnumerable<BookInstance>? Instances { get; set; }
     }

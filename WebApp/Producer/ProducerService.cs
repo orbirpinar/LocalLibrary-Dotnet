@@ -1,12 +1,9 @@
 using System;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
-using Polly.Retry;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using WebApp.Configuration;

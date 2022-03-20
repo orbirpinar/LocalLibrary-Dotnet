@@ -4,7 +4,6 @@ namespace WebApp.Dto
 {
     public class SearchParamDto
     {
-         [JsonProperty("title")]
-        public string Title { get; set; }
+        [JsonProperty("title")] public string Title { get; set; } = default!;
     }
 }

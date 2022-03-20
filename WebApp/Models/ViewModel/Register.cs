@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace WebApp.Models.ViewModel
 {
@@ -7,22 +6,21 @@ namespace WebApp.Models.ViewModel
     {
         [Required]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string Email { get; set; } = default!;
+        
+        public string? FirstName { get; set; }
         
         [Required]
-        public string FirstName { get; set; }
-        
-        [Required]
-        public string LastName { get; set; }
-        
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string? LastName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Compare(nameof(Password),ErrorMessage = "Password and confirmation password does not match")]
-        public string ConfirmPassword { get; set; }
-        
+        public string Password { get; set; } = default!;
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare(nameof(Password), ErrorMessage = "Password and confirmation password does not match")]
+        public string ConfirmPassword { get; set; } = default!;
+
     }
 }

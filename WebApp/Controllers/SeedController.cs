@@ -1,11 +1,11 @@
-using System;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Dto;
 using WebApp.Producer;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "ADMIN")]
     public class SeedController : Controller
     {
 

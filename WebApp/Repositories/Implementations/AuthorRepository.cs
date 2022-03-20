@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
@@ -50,8 +49,8 @@ namespace WebApp.Repositories.Implementations
         public async Task<Author?> GetWithBooksAndInstancesByIdAsync(int id)
         {
             return await _context.Author
-                .Include(author => author.Books)
-                .ThenInclude(book => book.Instances)
+                .Include(a => a.Books)
+                .ThenInclude(b => b.Instances)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
@@ -83,8 +82,7 @@ namespace WebApp.Repositories.Implementations
 
         public void Dispose()
         {
-            _context.Dispose();
-            GC.SuppressFinalize(this);
+            Dispose(true);
         }
     }
 }

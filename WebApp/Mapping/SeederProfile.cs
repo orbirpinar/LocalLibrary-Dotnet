@@ -1,5 +1,4 @@
 using AutoMapper;
-using WebApp.Consumer;
 using WebApp.Consumer.SeedData;
 using WebApp.Models;
 

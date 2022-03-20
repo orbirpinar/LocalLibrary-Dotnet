@@ -17,6 +17,6 @@ public class SeedController {
 
     @GetMapping("/seed")
     public void seed() throws MalformedURLException {
-        execute.execute();
+        execute.getBestBooks();
     }
 }

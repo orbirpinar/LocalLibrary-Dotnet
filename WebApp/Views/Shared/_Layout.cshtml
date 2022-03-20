@@ -31,21 +31,24 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Books</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="author" asp-action="index">Authors</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="index">Authors</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserBookInstance" asp-action="Index">My Books</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Seed" asp-action="Search">Seeding</a>
-                            </li>
-                            
+                            @if (User.IsInRole("ADMIN"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Seed" asp-action="Search">Seeding</a>
+                                </li>
+                            }
+
                         </ul>
                         <ul class="navbar-nav d-flex justify-content-end flex-grow-1">
 
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post">
-                                    <button type="submit" class="nav-link text-dark">Logout</button>
+                                    <button type="submit" class="btn btn-link text-dark">Logout</button>
                                 </form>
                             </li>
                         </ul>

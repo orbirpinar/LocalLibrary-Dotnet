@@ -62,7 +62,7 @@ namespace WebApp.Repositories.Implementations
 
         public async Task<IEnumerable<BookInstance>> GetByBookId(int bookId)
         {
-            return await _context.BookInstance.Where(b => b.Book.Id == bookId)
+            return await _context.BookInstance.Where(b => b.Book!.Id == bookId)
                 .ToListAsync();
         }
 
@@ -95,8 +95,7 @@ namespace WebApp.Repositories.Implementations
 
         public void Dispose()
         {
-            _context.Dispose();
-            GC.SuppressFinalize(this);
+            Dispose(true);
         }
     }
 }

@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using WebApp.Consumer;
 
 namespace WebApp.Configuration
 {

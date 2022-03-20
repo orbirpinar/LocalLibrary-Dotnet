@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using WebApp.Models;
 
 namespace WebApp.Dto
 {
@@ -17,6 +16,6 @@ namespace WebApp.Dto
         
         public string? Info { get; set; }
 
-        public IEnumerable<BookViewDto> Books { get; set; }
+        public IEnumerable<BookViewDto> Books { get; set; } = default!;
     }
 }

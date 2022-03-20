@@ -1,6 +1,7 @@
 package com.orbirpinar.scraping.library.facade;
 
 import com.orbirpinar.scraping.library.PageObjects.BookListPO;
+import com.orbirpinar.scraping.library.configuration.SeleniumConfig;
 import com.orbirpinar.scraping.library.dtos.AuthorDto;
 import com.orbirpinar.scraping.library.dtos.BookDto;
 import com.orbirpinar.scraping.library.dtos.ScrapingResponseDto;
@@ -55,13 +56,11 @@ public class AutomateFacadeImpl implements AutomateFacade {
 
 
     @Override
-    @RabbitListener(queues = "${rabbitMq.queue.searchData}")
-    public void scrapingByBookTitle(SearchParamDto searchParamDto) throws Exception {
-        bookListPO.navigateTo(BASE_URL + "/search?q=" + searchParamDto.getTitle());
+    public void scrapingByBookTitle(String title) throws Exception {
+        bookListPO.navigateTo(BASE_URL + "/search?q=" + title);
         String smallCoverImageLink = bookService.getSmallCoverImageLink();
         bookService.clickBookDetail();
         sendData(smallCoverImageLink);
-
     }
 
     private void sendData(String smallCoverImageLink) {

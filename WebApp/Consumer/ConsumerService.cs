@@ -43,7 +43,7 @@ namespace WebApp.Consumer
                 var body = args.Body.ToArray();
                 var jsonData = Encoding.UTF8.GetString(body);
                 Console.WriteLine(jsonData);
-                var seedData = JsonConvert.DeserializeObject<Dto.SeedData>(jsonData);
+                var seedData = JsonConvert.DeserializeObject<SeedData.SeedData>(jsonData);
 
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {

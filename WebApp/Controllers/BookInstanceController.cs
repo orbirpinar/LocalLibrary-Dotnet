@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Models.CreateModel;
@@ -20,6 +21,7 @@ namespace WebApp.Controllers
             _bookRepository = bookRepository;
         }
 
+        
         public async Task<IActionResult> Detail(Guid id)
         {
             var bookInstance = await _bookInstanceRepository.GetWithBookAndBorrowerById(id);
@@ -33,6 +35,7 @@ namespace WebApp.Controllers
 
         
         [HttpPost("/bookInstance/{bookId:int}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Create(int bookId,CreateBookInstanceModel bookInstanceModel)
         {
             var book = await _bookRepository.GetByIdAsync(bookId);

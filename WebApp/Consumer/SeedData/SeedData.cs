@@ -1,11 +1,8 @@
-using WebApp.Consumer;
-using WebApp.Consumer.SeedData;
-
-namespace WebApp.Dto
+namespace WebApp.Consumer.SeedData
 {
     public class SeedData
     {
-        public AuthorSeed Author { get; set; }
-        public BookSeed Book { get; set; }
+        public AuthorSeed Author { get; set; } = null!;
+        public BookSeed Book { get; set; } = null!;
     }
 }

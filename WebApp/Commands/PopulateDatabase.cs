@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using MediatR;
-using WebApp.Dto;
+using WebApp.Consumer.SeedData;
 
 namespace WebApp.Commands
 {
